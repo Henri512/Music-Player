@@ -1,5 +1,6 @@
 ﻿using System;
-namespace MusicPlayer.Models
+
+namespace MusicPlayer.Model.Entities
 {
     public abstract class BaseEntity
     {

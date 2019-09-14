@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using MusicPlayer.Models;
-using MusicPlayer.Services;
+using MusicPlayer.Model.Entities;
+using MusicPlayer.Model.Services;
 
 namespace MusicPlayer.Controllers
 {
@@ -27,9 +27,9 @@ namespace MusicPlayer.Controllers
         }
 
         [HttpPost("[action]")]
-        public ActionResult<Album> AddAlbum(Album Album)
+        public ActionResult<Album> AddAlbum(Album album)
         {
-            return new ActionResult<Album>(_albumService.AddAlbum(Album));
+            return new ActionResult<Album>(_albumService.AddAlbum(album));
         }
 
         public IActionResult Index()

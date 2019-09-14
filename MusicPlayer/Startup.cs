@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MusicLibrary.Domain.Services;
+using MusicPlaSyer.Model.Services;
+using MusicPlayer.Model.Repositories;
+using MusicPlayer.Model.Services;
 using MusicPlayer.Models;
 using MusicPlayer.Repositories;
 using MusicPlayer.Services;
@@ -53,6 +57,10 @@ namespace MusicPlayer
 
             services.AddTransient<IAlbumService, AlbumService>();
             services.AddTransient<ISongInfoService, SongInfoService>();
+
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<MusicPlayerContext>();
+            services.AddScoped<DbContext, MusicPlayerContext>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

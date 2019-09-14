@@ -1,10 +1,10 @@
-﻿using MusicPlayer.Helpers;
+﻿using MusicPlayer.Utilities.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MusicPlayer.Models
+namespace MusicPlayer.Model.Entities
 {
     public class Album : BaseEntity
     {

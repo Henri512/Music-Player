@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Converters;
 using System;
 
-namespace MusicPlayer.Helpers
+namespace MusicPlayer.Utilities.Helpers
 {
     public class CustomTimeSpanConverter : DateTimeConverterBase
     {

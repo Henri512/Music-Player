@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MusicPlayer.Models;
-using MusicPlayer.Repositories;
+using MusicPlayer.Model.Entities;
+using MusicPlayer.Model.Repositories;
+using MusicPlayer.Model.Services;
 using System.Collections.Generic;
 using System.Linq;
 

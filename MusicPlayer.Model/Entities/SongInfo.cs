@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using MusicPlayer.Helpers;
+using MusicPlayer.Utilities.Helpers;
 using Newtonsoft.Json;
 
-namespace MusicPlayer.Models
+namespace MusicPlayer.Model.Entities
 {
     public class SongInfo : BaseEntity
     {

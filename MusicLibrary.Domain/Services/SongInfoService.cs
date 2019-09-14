@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MusicPlayer.Models;
-using MusicPlayer.Repositories;
+using MusicPlaSyer.Model.Services;
+using MusicPlayer.Model.Entities;
+using MusicPlayer.Model.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MusicPlayer.Services
+namespace MusicLibrary.Domain.Services
 {
     public class SongInfoService : ISongInfoService
     {

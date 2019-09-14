@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json.Converters;
 
-namespace MusicPlayer.Helpers
+namespace MusicPlayer.Utilities.Helpers
 {
     public class CustomDateTimeConverter : IsoDateTimeConverter
     {
         public CustomDateTimeConverter(string format)
         {
-            base.DateTimeFormat = format;
+            DateTimeFormat = format;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using MusicPlayer.Models;
-using MusicPlayer.Services;
+using MusicPlaSyer.Model.Services;
+using MusicPlayer.Model.Entities;
 
 namespace MusicPlayer.Controllers
 {

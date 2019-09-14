@@ -1,7 +1,7 @@
-﻿using MusicPlayer.Models;
+﻿using MusicPlayer.Model.Entities;
 using System.Linq;
 
-namespace MusicPlayer.Repositories
+namespace MusicPlayer.Model.Repositories
 {
     public interface ISongInfoRepository
     {

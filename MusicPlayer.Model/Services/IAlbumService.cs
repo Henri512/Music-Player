@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using MusicPlayer.Models;
+using MusicPlayer.Model.Entities;
 
-namespace MusicPlayer.Services
+namespace MusicPlayer.Model.Services
 {
     public interface IAlbumService
     {
