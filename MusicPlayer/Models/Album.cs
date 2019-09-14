@@ -1,18 +1,18 @@
-﻿using System;
+﻿using MusicPlayer.Helpers;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace MusicPlayer.Models
 {
-    public class Album
+    public class Album : BaseEntity
     {
-        public int Id { get; set; }
-
         [StringLength(100)]
         [Required]
         public string Name { get; set; }
 
+        [JsonConverter(typeof(CustomDateTimeConverter), "yyyy")]
         public DateTime Year { get; set; }
 
         [StringLength(255)]

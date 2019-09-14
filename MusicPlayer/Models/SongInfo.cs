@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using MusicPlayer.Helpers;
+using Newtonsoft.Json;
 
 namespace MusicPlayer.Models
 {
-    public class SongInfo
+    public class SongInfo : BaseEntity
     {
-        public int Id { get; set; }
-
         public int? AlbumId { get; set; }
 
         [StringLength(50)]
@@ -15,6 +15,7 @@ namespace MusicPlayer.Models
         [StringLength(100)]
         public string Author { get; set; }
 
+        [JsonConverter(typeof(CustomTimeSpanConverter))]
         public TimeSpan Duration { get; set; }
 
         [StringLength(30)]

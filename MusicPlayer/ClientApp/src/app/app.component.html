@@ -3,16 +3,17 @@
   <h1 style="margin-top:10px;">
     Welcome to music player!
   </h1>
-  <img width="200" alt="Angular Logo" src="../assets/angular-asp-core.png">
+  <img width="200" alt="App Logo" src="../assets/logo-jukebox.png">
   <div class="card" style="margin-left:50px; margin-right:50px; margin-bottom:50px;">
     <div class="card-header" style="font-weight:bold; font-size:x-large;">
       Latest songs in the database
     </div>
     <div class="card-body">
       <div class="table-responsive" style="max-height:385px;">
-        <table class="table mb-0" *ngIf="latestSongs && latestSongs.length>0">
+        <table class="table mb-0 darkTable" *ngIf="latestSongs && latestSongs.length>0">
           <thead>
             <tr>
+              <th>No.</th>
               <th>Name</th>
               <th>Author</th>
               <th>Album</th>
@@ -25,10 +26,11 @@
           </thead>
           <tbody>
             <tr *ngFor="let songInfo of latestSongs; let i = index">
+              <td>{{ i }}</td>
               <td>{{ songInfo.name }}</td>
               <td>{{ songInfo.author }}</td>
               <td>{{ songInfo.album.name }}</td>
-              <td>{{ songInfo.album.year}} </td>
+              <td>{{ songInfo.album.year  }} </td>
               <td>{{ songInfo.duration }}</td>
               <td>{{ songInfo.genre }}</td>
               <td>{{ songInfo.bitRate }} </td>

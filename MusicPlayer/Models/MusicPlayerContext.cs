@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 
 namespace MusicPlayer.Models
 {
@@ -13,9 +14,29 @@ namespace MusicPlayer.Models
         public DbSet<SongInfo> SongInfos { get; set; }
         public DbSet<Album> Albums { get; set; }
 
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker
+               .Entries()
+               .Where(e => e.Entity is BaseEntity && (
+                       e.State == EntityState.Added
+                       || e.State == EntityState.Modified));
+
+            foreach (var entityEntry in entries)
+            {
+                ((BaseEntity)entityEntry.Entity).LastModified = DateTime.Now;
+
+                if (entityEntry.State == EntityState.Added)
+                {
+                    ((BaseEntity)entityEntry.Entity).Created = DateTime.Now;
+                }
+            }
+
+            return base.SaveChanges();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<SongInfo>()
                 .HasOne(s => s.Album)
                 .WithMany(a => a.SongInfos)
@@ -96,6 +117,7 @@ namespace MusicPlayer.Models
                     Name = "06 - May God Be With Me ",
                     AlbumId = 1,
                     Author = "Chip Taylor",
+                    Duration = new TimeSpan(0, 4, 08),
                     Genre = "Country",
                     BitRate = 725,
                     Extension = "FLAC",
