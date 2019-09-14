@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MusicPlayer.Models;
+using MusicPlayer.Data.Models;
 
-namespace MusicPlayer.Migrations
+namespace MusicPlayer.Data.Migrations
 {
     [DbContext(typeof(MusicPlayerContext))]
     [Migration("20190912210306_AddedAlbumEntity")]

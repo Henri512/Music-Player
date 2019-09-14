@@ -3,7 +3,7 @@ using MusicPlayer.Model.Entities;
 using System;
 using System.Linq;
 
-namespace MusicPlayer.Models
+namespace MusicPlayer.Data.Models
 {
     public class MusicPlayerContext : DbContext
     {

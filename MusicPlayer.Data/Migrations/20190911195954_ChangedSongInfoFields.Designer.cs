@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MusicPlayer.Models;
+using MusicPlayer.Data.Models;
 
-namespace MusicPlayer.Migrations
+namespace MusicPlayer.Data.Migrations
 {
     [DbContext(typeof(MusicPlayerContext))]
-    [Migration("20190911183203_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20190911195954_ChangedSongInfoFields")]
+    partial class ChangedSongInfoFields
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,11 +27,17 @@ namespace MusicPlayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Album");
+                    b.Property<string>("Album")
+                        .HasMaxLength(100);
 
-                    b.Property<string>("Author");
+                    b.Property<string>("Author")
+                        .HasMaxLength(100);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("PhysicalPath")
+                        .HasMaxLength(255);
 
                     b.Property<int>("TimesPlayed");
 

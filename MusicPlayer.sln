@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayer.Model", "MusicP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayer.Utilities", "MusicPlayer.Utilities\MusicPlayer.Utilities.csproj", "{D084B17E-A9A6-4D7D-87CF-DFF3BD18ACF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicLibrary.Domain", "MusicLibrary.Domain\MusicLibrary.Domain.csproj", "{6FE7B431-BF86-4811-B847-742A4D1392C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayer.Domain", "MusicLibrary.Domain\MusicPlayer.Domain.csproj", "{6FE7B431-BF86-4811-B847-742A4D1392C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayer.Data", "MusicPlayer.Data\MusicPlayer.Data.csproj", "{5E5C65AC-6E08-4615-A057-D5F10C8097D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6FE7B431-BF86-4811-B847-742A4D1392C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FE7B431-BF86-4811-B847-742A4D1392C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FE7B431-BF86-4811-B847-742A4D1392C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E5C65AC-6E08-4615-A057-D5F10C8097D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E5C65AC-6E08-4615-A057-D5F10C8097D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E5C65AC-6E08-4615-A057-D5F10C8097D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E5C65AC-6E08-4615-A057-D5F10C8097D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

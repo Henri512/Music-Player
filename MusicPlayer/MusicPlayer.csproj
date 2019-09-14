@@ -33,7 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MusicLibrary.Domain\MusicLibrary.Domain.csproj" />
+    <ProjectReference Include="..\MusicLibrary.Domain\MusicPlayer.Domain.csproj" />
+    <ProjectReference Include="..\MusicPlayer.Data\MusicPlayer.Data.csproj" />
     <ProjectReference Include="..\MusicPlayer.Model\MusicPlayer.Model.csproj" />
     <ProjectReference Include="..\MusicPlayer.Utilities\MusicPlayer.Utilities.csproj" />
   </ItemGroup>

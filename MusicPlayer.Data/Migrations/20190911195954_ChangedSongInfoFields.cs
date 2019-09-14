@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MusicPlayer.Migrations
+namespace MusicPlayer.Data.Migrations
 {
     public partial class ChangedSongInfoFields : Migration
     {

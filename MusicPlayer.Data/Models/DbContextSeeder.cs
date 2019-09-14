@@ -2,7 +2,7 @@
 using MusicPlayer.Model.Entities;
 using System;
 
-namespace MusicPlayer.Models
+namespace MusicPlayer.Data.Models
 {
     public class DbContextSeeder : IDisposable
     {

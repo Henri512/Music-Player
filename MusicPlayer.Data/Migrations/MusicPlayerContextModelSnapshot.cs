@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MusicPlayer.Models;
+using MusicPlayer.Data.Models;
 
-namespace MusicPlayer.Migrations
+namespace MusicPlayer.Data.Migrations
 {
     [DbContext(typeof(MusicPlayerContext))]
     partial class MusicPlayerContextModelSnapshot : ModelSnapshot
