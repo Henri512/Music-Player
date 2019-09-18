@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    var url = 'https://localhost:44385/api/SongInfo/GetSongInfos';
+    var url = 'api/SongInfo/GetSongInfos';
     const params = new HttpParams()
       .set('includeAlbum', 'true');
     this.http.get<SongInfo[]>(url, { params}).subscribe(result => {
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   cacheSong(audio: HTMLAudioElement,  songInfo: SongInfo) {
     var cachedSongPath = decodeURIComponent('../assets/cache/' + songInfo.fullName);
 
-      var url = 'https://localhost:44385/api/SongInfo/CacheSongFile';
+      var url = 'api/SongInfo/CacheSongFile';
       const params = new HttpParams()
         .set('id', songInfo.id.toString())
         .set('cachedSongPath', cachedSongPath);

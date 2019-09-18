@@ -20,7 +20,7 @@ export class DisplaySongComponent implements OnInit {
       this.id = params.get('id');
     });
 
-    var url = 'https://localhost:44385/api/SongInfo/GetSongInfoById?id=' + this.id + "&includeAlbum=true";
+    var url = 'api/SongInfo/GetSongInfoById?id=' + this.id + "&includeAlbum=true";
     this.http.get<SongInfo>(url).subscribe(result => {
       this.songInfo = of(result).pipe(); 
     }, error => console.error(error));
@@ -29,7 +29,7 @@ export class DisplaySongComponent implements OnInit {
   cacheSong(audio: HTMLAudioElement, songInfo: SongInfo) {
     var cachedSongPath = decodeURIComponent('../assets/cache/' + songInfo.fullName);
 
-    var url = 'https://localhost:44385/api/SongInfo/CacheSongFile';
+    var url = 'api/SongInfo/CacheSongFile';
     const params = new HttpParams()
       .set('id', songInfo.id.toString())
       .set('cachedSongPath', cachedSongPath);
