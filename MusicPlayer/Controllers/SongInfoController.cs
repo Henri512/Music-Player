@@ -55,13 +55,16 @@ namespace MusicPlayer.Controllers
             return new ActionResult<byte[]>(songData);
         }
 
-        [HttpGet("{id}")]
-        public ActionResult<bool> CacheSongFile(int id, string cachedSongPath)
+        [HttpGet]
+        public ActionResult<bool> CacheSongFile(int id, string cacheFolder)
         {
             var result = false;
+            var songInfo = _songInfoService.GetSongInfoById(id, false);
+            if (songInfo == null)
+                return NotFound("Song does not exist!");
+            var cachedSongPath = Path.Combine(cacheFolder, songInfo.FullName);
             if (!FileIO.Exists(cachedSongPath))
             {
-                var songInfo = _songInfoService.GetSongInfoById(id, false);
                 var fileReader = FileIO.OpenRead(songInfo.FullPath);
                 var songData = new byte[fileReader.Length];
                 fileReader.Read(songData);

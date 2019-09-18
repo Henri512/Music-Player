@@ -11,6 +11,7 @@ import { Observable, of } from 'rxjs';
 })
 
 export class DisplaySongComponent implements OnInit {
+  display: string = 'none';
   id: string;
   songInfo: Observable<SongInfo>;
   constructor(private _activatedRoute: ActivatedRoute, private http: HttpClient) { }
@@ -26,20 +27,16 @@ export class DisplaySongComponent implements OnInit {
     }, error => console.error(error));
   }
 
-  cacheSong(audio: HTMLAudioElement, songInfo: SongInfo) {
-    var cachedSongPath = decodeURIComponent('../assets/cache/' + songInfo.fullName);
+  cacheSong(songInfo: SongInfo) {
+    console.log("Kesiranje pesme " + songInfo.name);
 
-    var url = 'api/SongInfo/CacheSongFile';
-    const params = new HttpParams()
-      .set('id', songInfo.id.toString())
-      .set('cachedSongPath', cachedSongPath);
-    this.http.get<boolean>(url, { params }).subscribe(result => {
+    var url = 'api/SongInfo/CacheSongFile?id=' + songInfo.id + "&cacheFolder=../assets/cache/";
+    this.http.get<boolean>(url).subscribe(result => {
       if (result) {
         console.log("Song cached!");
       } else {
         console.log("Song already exist!");
       }
-      audio.src = cachedSongPath;
     }, error => console.error(error));
   }
 
@@ -48,12 +45,22 @@ export class DisplaySongComponent implements OnInit {
   }
 
   playSong(songInfo: SongInfo) {
+    console.log("Song playing");
     // timer should be started here
   }
 
   pauseSong(songInfo: SongInfo) {
+    console.log("Song pausing");
     // if song is already playing for some time(30 seconds for an example) or more
     // we will increase the playCount of that song in the database
+  }
+
+  openModalImg(){
+    this.display = 'block';
+  }
+
+  onCloseHandled(){  
+    this.display = 'none';
   }
 }
 
