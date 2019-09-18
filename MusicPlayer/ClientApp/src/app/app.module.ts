@@ -8,10 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AlertModule } from 'ngx-bootstrap';
+import { DisplaySongComponent } from './display-song/display-song.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DisplaySongComponent
   ],
   imports: [
     BrowserModule,

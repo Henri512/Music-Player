@@ -3,8 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MusicPlayer.Data.Models;
 
 namespace MusicPlayer.Data.Migrations
 {
@@ -15,11 +13,11 @@ namespace MusicPlayer.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MusicPlayer.Models.Album", b =>
+            modelBuilder.Entity("MusicPlayer.Model.Entities.Album", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,11 +41,27 @@ namespace MusicPlayer.Data.Migrations
                     b.ToTable("Albums");
 
                     b.HasData(
-                        new { Id = 1, Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Name = "This Side Of The Big River", Year = new DateTime(1975, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
-                    );
+                        new
+                        {
+                            Id = 1,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImagePath = "../assets/album-logo-1.jpg",
+                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "This Side Of The Big River",
+                            Year = new DateTime(1975, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ImagePath = "../assets/album-logo-2.jpeg",
+                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Essentials II",
+                            Year = new DateTime(2014, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
-            modelBuilder.Entity("MusicPlayer.Models.SongInfo", b =>
+            modelBuilder.Entity("MusicPlayer.Model.Entities.SongInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,18 +101,146 @@ namespace MusicPlayer.Data.Migrations
                     b.ToTable("SongInfos");
 
                     b.HasData(
-                        new { Id = 1, AlbumId = 1, Author = "Chip Taylor", BitRate = 798, Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Duration = new TimeSpan(0, 0, 3, 17, 0), Extension = "FLAC", Genre = "Country", LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Name = "01 - Same Ol' Story ", PhysicalPath = "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]", TimesPlayed = 0 },
-                        new { Id = 2, AlbumId = 1, Author = "Chip Taylor", BitRate = 694, Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Duration = new TimeSpan(0, 0, 2, 47, 0), Extension = "FLAC", Genre = "Country", LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Name = "02 - Holding Me Together ", PhysicalPath = "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]", TimesPlayed = 0 },
-                        new { Id = 3, AlbumId = 1, Author = "Chip Taylor", BitRate = 845, Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Duration = new TimeSpan(0, 0, 3, 24, 0), Extension = "FLAC", Genre = "Country", LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Name = "03 - Gettin' Older, Lookin' Back ", PhysicalPath = "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]", TimesPlayed = 0 },
-                        new { Id = 4, AlbumId = 1, Author = "Chip Taylor", BitRate = 751, Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Duration = new TimeSpan(0, 0, 5, 30, 0), Extension = "FLAC", Genre = "Country", LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Name = "04 - John Tucker's On The Wagon Again ", PhysicalPath = "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]", TimesPlayed = 0 },
-                        new { Id = 5, AlbumId = 1, Author = "Chip Taylor", BitRate = 901, Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Duration = new TimeSpan(0, 0, 3, 17, 0), Extension = "FLAC", Genre = "Country", LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Name = "05 - Big River ", PhysicalPath = "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]", TimesPlayed = 0 },
-                        new { Id = 6, AlbumId = 1, Author = "Chip Taylor", BitRate = 725, Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Duration = new TimeSpan(0, 0, 4, 8, 0), Extension = "FLAC", Genre = "Country", LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Name = "06 - May God Be With Me ", PhysicalPath = "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]", TimesPlayed = 0 }
-                    );
+                        new
+                        {
+                            Id = 1,
+                            AlbumId = 1,
+                            Author = "Chip Taylor",
+                            BitRate = 798,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 3, 17, 0),
+                            Extension = "FLAC",
+                            Genre = "Country",
+                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "01 - Same Ol' Story ",
+                            PhysicalPath = "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]",
+                            TimesPlayed = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AlbumId = 1,
+                            Author = "Chip Taylor",
+                            BitRate = 694,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 2, 47, 0),
+                            Extension = "FLAC",
+                            Genre = "Country",
+                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "02 - Holding Me Together ",
+                            PhysicalPath = "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]",
+                            TimesPlayed = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AlbumId = 1,
+                            Author = "Chip Taylor",
+                            BitRate = 845,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 3, 24, 0),
+                            Extension = "FLAC",
+                            Genre = "Country",
+                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "03 - Gettin' Older, Lookin' Back ",
+                            PhysicalPath = "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]",
+                            TimesPlayed = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AlbumId = 1,
+                            Author = "Chip Taylor",
+                            BitRate = 751,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 5, 30, 0),
+                            Extension = "FLAC",
+                            Genre = "Country",
+                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "04 - John Tucker's On The Wagon Again ",
+                            PhysicalPath = "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]",
+                            TimesPlayed = 0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AlbumId = 1,
+                            Author = "Chip Taylor",
+                            BitRate = 901,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 3, 17, 0),
+                            Extension = "FLAC",
+                            Genre = "Country",
+                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "05 - Big River ",
+                            PhysicalPath = "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]",
+                            TimesPlayed = 0
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AlbumId = 1,
+                            Author = "Chip Taylor",
+                            BitRate = 725,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 4, 8, 0),
+                            Extension = "FLAC",
+                            Genre = "Country",
+                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "06 - May God Be With Me ",
+                            PhysicalPath = "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]",
+                            TimesPlayed = 0
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AlbumId = 2,
+                            Author = "Karen Souza",
+                            BitRate = 320,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 3, 27, 0),
+                            Extension = "mp3",
+                            Genre = "Vocal Jazz",
+                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "01 - The Way It Is",
+                            PhysicalPath = "D:\\Muzika\\[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
+                            TimesPlayed = 0
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AlbumId = 2,
+                            Author = "Karen Souza",
+                            BitRate = 320,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 4, 6, 0),
+                            Extension = "mp3",
+                            Genre = "Vocal Jazz",
+                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "02 - Wicked Game",
+                            PhysicalPath = "D:\\Muzika\\[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
+                            TimesPlayed = 0
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AlbumId = 2,
+                            Author = "Karen Souza",
+                            BitRate = 320,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 3, 42, 0),
+                            Extension = "mp3",
+                            Genre = "Vocal Jazz",
+                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "03 - Everyday Is Like Sunday",
+                            PhysicalPath = "D:\\Muzika\\[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
+                            TimesPlayed = 0
+                        });
                 });
 
-            modelBuilder.Entity("MusicPlayer.Models.SongInfo", b =>
+            modelBuilder.Entity("MusicPlayer.Model.Entities.SongInfo", b =>
                 {
-                    b.HasOne("MusicPlayer.Models.Album", "Album")
+                    b.HasOne("MusicPlayer.Model.Entities.Album", "Album")
                         .WithMany("SongInfos")
                         .HasForeignKey("AlbumId")
                         .OnDelete(DeleteBehavior.SetNull);

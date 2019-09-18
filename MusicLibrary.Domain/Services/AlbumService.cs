@@ -1,36 +1,42 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MusicPlayer.Model.Entities;
-using MusicPlayer.Model.Repositories;
-using MusicPlayer.Model.Services;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using MusicPlayer.Data.Entities;
+using MusicPlayer.Data.Repositories;
+using MusicPlayer.Model.Models;
+using MusicPlayer.Model.Services;
 
-namespace MusicPlayer.Services
+namespace MusicPlayer.Domain.Services
 {
     public class AlbumService : IAlbumService
     {
         private readonly IAlbumRepository _albumRepository;
+        private readonly IMapper _mapper;
 
-        public AlbumService(IAlbumRepository albumRepository)
+        public AlbumService(IAlbumRepository albumRepository, IMapper mapper)
         {
             _albumRepository = albumRepository;
+            _mapper = mapper;
         }
 
-        public IEnumerable<Album> GetAlbums(bool includeSongInfos)
+        public IEnumerable<AlbumModel> GetAlbums(bool includeSongInfos)
         {
             var albums = includeSongInfos ? _albumRepository.GetAlbums().Include(a => a.SongInfos) : _albumRepository.GetAlbums();
-            return albums.ToList();
+            return _mapper.Map<IEnumerable<AlbumModel>>(albums.ToList());
         }
 
-        public Album GetAlbumById(int id, bool includeSongInfos)
+        public AlbumModel GetAlbumById(int id, bool includeSongInfos)
         {
             var album = includeSongInfos ? _albumRepository.GetAlbumById(id).Include(a => a.SongInfos) : _albumRepository.GetAlbumById(id);
-            return album.FirstOrDefault();
+            return _mapper.Map<AlbumModel>(album.FirstOrDefault());
         }
 
-        public Album AddAlbum(Album album)
+        public AlbumModel AddAlbum(AlbumModel albumModel)
         {
-            return _albumRepository.AddAlbum(album);
+            var album = _mapper.Map<Album>(albumModel);
+            var albumAdded = _albumRepository.AddAlbum(album);
+            return _mapper.Map<AlbumModel>(albumAdded);
         }
     }
 }

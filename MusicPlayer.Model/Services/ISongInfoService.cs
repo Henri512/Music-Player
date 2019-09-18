@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
-using MusicPlayer.Model.Entities;
+using MusicPlayer.Model.Models;
 
-namespace MusicPlaSyer.Model.Services
+namespace MusicPlayer.Model.Services
 {
     public interface ISongInfoService
     {
-        SongInfo AddSongInfo(SongInfo songInfo);
-        IEnumerable<SongInfo> GetSongInfos(bool includeAlbum);
-        SongInfo GetSongInfoById(int id, bool includeAlbum);
+        SongInfoModel AddSongInfo(SongInfoModel songInfo);
+        IEnumerable<SongInfoModel> GetSongInfos(bool includeAlbum);
+        SongInfoModel GetSongInfoById(int id, bool includeAlbum);
+        bool SongPlayed(int id);
     }
 }

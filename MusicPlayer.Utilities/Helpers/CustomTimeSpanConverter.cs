@@ -6,7 +6,6 @@ namespace MusicPlayer.Utilities.Helpers
 {
     public class CustomTimeSpanConverter : DateTimeConverterBase
     {
-
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             writer.WriteValue(((TimeSpan)value).ToString(@"mm\:ss"));

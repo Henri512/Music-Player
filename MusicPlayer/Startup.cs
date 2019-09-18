@@ -1,3 +1,6 @@
+using AutoMapper;
+using ElectronNET.API;
+using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -5,13 +8,11 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MusicLibrary.Domain.Services;
-using MusicPlaSyer.Model.Services;
-using MusicPlayer.Data.Models;
-using MusicPlayer.Model.Repositories;
+using MusicPlayer.Data;
+using MusicPlayer.Data.Repositories;
+using MusicPlayer.Domain.Profiles;
+using MusicPlayer.Domain.Services;
 using MusicPlayer.Model.Services;
-using MusicPlayer.Repositories;
-using MusicPlayer.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -42,7 +43,6 @@ namespace MusicPlayer
                     // send back a ISO date
                     var settings = options.SerializerSettings;
                     settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
                     // dont mess with case of properties
                     var resolver = options.SerializerSettings.ContractResolver as DefaultContractResolver;
                     resolver.NamingStrategy = new CamelCaseNamingStrategy();
@@ -51,6 +51,8 @@ namespace MusicPlayer
 
             services.AddDbContext<MusicPlayerContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MusicPlayerCN")));
+
+            services.AddAutoMapper(typeof(AlbumModelProfile));
 
             services.AddTransient<ISongInfoRepository, SongInfoRepository>();
             services.AddTransient<IAlbumRepository, AlbumRepository>();
@@ -61,6 +63,16 @@ namespace MusicPlayer
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<MusicPlayerContext>();
             services.AddScoped<DbContext, MusicPlayerContext>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    );
+            });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -75,6 +87,8 @@ namespace MusicPlayer
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseCors("CorsPolicy");
             }
             else
             {
@@ -85,7 +99,7 @@ namespace MusicPlayer
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -105,6 +119,21 @@ namespace MusicPlayer
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            Bootstrap();
+        }
+
+        private async void Bootstrap()
+        {
+            var options = new BrowserWindowOptions
+            {
+                WebPreferences = new WebPreferences
+                {
+                    WebSecurity = false
+                }
+            };
+
+            await Electron.WindowManager.CreateWindowAsync(options);
         }
     }
 }

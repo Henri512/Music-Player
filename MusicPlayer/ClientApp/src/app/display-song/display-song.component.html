@@ -1,0 +1,45 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1 style="margin-top:10px;">
+    Welcome to music player!
+  </h1>
+  <div *ngIf="songInfo | async as songInfo; else loading;">
+    <div class="card" style="margin-left:50px; margin-right:50px; margin-bottom:50px;">
+      <div class="card-header" style="font-weight:bold; font-size:x-large;">
+        Latest songs in the database
+      </div>
+      <div class="card-body">
+        <div class="table-responsive" style="max-height:385px;">
+          <div>
+            <label name="songName">{{ songInfo.name }}</label>
+            <label name="songAuthor">{{ songInfo.author }}</label>
+            <label name="songAlbum">{{ songInfo.albumName }}</label>
+            <label name="songAlbumYear">{{ songInfo.albumYear }}</label>
+
+            <audio controls>
+              <source src="../../assets/cache/{{songInfo.fullName}}" (onload)="cacheSong(this, songInfo)" (onplay)="playSong(songInfo)" (onpause)="pauseSong(songInfo)" type="audio/{{songInfo.extension}}">
+            </audio>
+
+            <img id="myImg" src="../{{songInfo.albumImagePath}}" alt="Album logo" style="width:100%;max-width:300px">
+
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+
+              <!-- The Close Button -->
+              <span class="close">&times;</span>
+
+              <!-- Modal Content (The Image) -->
+              <img class="modal-content" id="albumLogo">
+
+              <!-- Modal Caption (Image Text) -->
+              <div id="caption"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <ng-template #loading>Loading User Data...</ng-template>
+  </div>
+
+<router-outlet></router-outlet>

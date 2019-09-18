@@ -1,0 +1,51 @@
+﻿using System;
+using System.IO;
+using MusicPlayer.Utilities.Helpers;
+using Newtonsoft.Json;
+
+namespace MusicPlayer.Model.Models
+{
+    public class SongInfoModel
+    {
+        public int Id { get; set; }
+
+        public int? AlbumId { get; set; }
+
+        public string Name { get; set; }
+
+        public string Author { get; set; }
+
+        [JsonConverter(typeof(CustomTimeSpanConverter))]
+        public TimeSpan Duration { get; set; }
+
+        public string Genre { get; set; }
+
+        public int BitRate { get; set; }
+
+        public int TimesPlayed { get; set; }
+
+        public string PhysicalPath { get; set; }
+
+        public string Extension { get; set; }
+        
+
+        public string AlbumName { get; set; }
+
+        [JsonConverter(typeof(CustomDateTimeConverter), "yyyy")]
+        public DateTime AlbumYear { get; set; }
+
+        public string AlbumImagePath { get; set; }
+
+        public string FullPath
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(PhysicalPath) && !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Extension))
+                    return Path.Combine(PhysicalPath, Name) + $".{Extension}";
+                else return null;
+            }
+        }
+
+        public string FullName => Name + "." + Extension;
+    }
+}
