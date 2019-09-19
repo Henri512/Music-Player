@@ -1,9 +1,0 @@
-{
-  "BlobStorages": {
-    "SongsBlobUrl": "https://sqlva5grykdrvj36ei.blob.core.windows.net/musicblob/"
-  },
-  "SearchFolders": [
-     "C://Users//dpa//Downloads//Muzika"
-  ],
-  "Extensions": "mp3,flac,wav,wma"
-}

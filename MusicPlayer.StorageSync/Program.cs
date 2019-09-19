@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Serilog.Events;
 
 namespace MusicPlayer.StorageSync
 {
@@ -14,14 +15,15 @@ namespace MusicPlayer.StorageSync
         static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
-            .WriteTo.File("consoleapp.log")
-            .CreateLogger();
+                .WriteTo
+                .Console()
+                .CreateLogger();
 
             logger = Log.Logger;
             try
             {
                 var builder = new ConfigurationBuilder()
-                       .AddJsonFile("storageConfig.json", optional: false, reloadOnChange: true);
+                    .AddJsonFile("appsettings.development.json", optional: false, reloadOnChange: true);
 
                 IConfigurationRoot configuration = builder.Build();
 
@@ -38,26 +40,14 @@ namespace MusicPlayer.StorageSync
                     .Split(',')
                     .Select(t => t.Trim(' '));
 
-                SynchronizeStorage(blobStorageLocation, searchFolders, extensions);
+                var mediaService = new MediaService(configuration);
+
+                mediaService.SynchronizeStorage();
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "An error ocurred during the synchronization.");
             }
-
-        }
-
-        private static void SynchronizeStorage(string blobStorageLocation, string[] searchFolders, IEnumerable<string> extensions)
-        {
-            searchFolders.ToList().ForEach((f) =>
-            {
-                var files = Directory.GetFiles(f, string.Join(',', extensions.Select(t => "*." + t)));
-
-                files.AsParallel().ForAll((file) =>
-                {
-                    //file
-                });
-            });
         }
     }
 }
