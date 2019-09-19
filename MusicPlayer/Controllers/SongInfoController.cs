@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using MusicPlayer.Model.Models;
 using MusicPlayer.Model.Services;
 using FileIO = System.IO.File;
@@ -14,10 +15,12 @@ namespace MusicPlayer.Controllers
     public class SongInfoController : ControllerBase
     {
         private readonly ISongInfoService _songInfoService;
+        private readonly IConfiguration _configuration;
 
-        public SongInfoController(ISongInfoService songInfoService)
+        public SongInfoController(ISongInfoService songInfoService, IConfiguration configuration)
         {
             _songInfoService = songInfoService;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -73,6 +76,14 @@ namespace MusicPlayer.Controllers
                 result = true;
             }
             return new ActionResult<bool>(result);
+        }
+
+        [HttpGet]
+        public ActionResult<string> GetSongFileUrl(string songFullPath)
+        {
+            var blobStoragePath = _configuration.GetSection("BlobStorages").GetValue<string>("SongsBlobUrl");
+
+            return new ActionResult<string>(Path.Combine(blobStoragePath, songFullPath));
         }
     }
 }

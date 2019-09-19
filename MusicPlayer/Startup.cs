@@ -64,6 +64,8 @@ namespace MusicPlayer
                 .AddDbContext<MusicPlayerContext>();
             services.AddScoped<DbContext, MusicPlayerContext>();
 
+            services.AddSingleton(Configuration);
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",

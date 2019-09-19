@@ -46,7 +46,7 @@ namespace MusicPlayer.Data
                     Genre = "Country",
                     BitRate = 798,
                     Extension = "FLAC",
-                    PhysicalPath = @"D:\Muzika\Chip Taylor...This Side Of The Big River(1975)[FLAC]",
+                    PhysicalPath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]",
                 },
                 new SongInfo
                 {
@@ -58,7 +58,7 @@ namespace MusicPlayer.Data
                     Genre = "Country",
                     BitRate = 694,
                     Extension = "FLAC",
-                    PhysicalPath = @"D:\Muzika\Chip Taylor...This Side Of The Big River(1975)[FLAC]"
+                    PhysicalPath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
                 },
                 new SongInfo
                 {
@@ -70,7 +70,7 @@ namespace MusicPlayer.Data
                     Genre = "Country",
                     BitRate = 845,
                     Extension = "FLAC",
-                    PhysicalPath = @"D:\Muzika\Chip Taylor...This Side Of The Big River(1975)[FLAC]"
+                    PhysicalPath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
                 },
                 new SongInfo
                 {
@@ -82,7 +82,7 @@ namespace MusicPlayer.Data
                     Genre = "Country",
                     BitRate = 751,
                     Extension = "FLAC",
-                    PhysicalPath = @"D:\Muzika\Chip Taylor...This Side Of The Big River(1975)[FLAC]"
+                    PhysicalPath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
                 },
                 new SongInfo
                 {
@@ -94,7 +94,7 @@ namespace MusicPlayer.Data
                     Genre = "Country",
                     BitRate = 901,
                     Extension = "FLAC",
-                    PhysicalPath = @"D:\Muzika\Chip Taylor...This Side Of The Big River(1975)[FLAC]"
+                    PhysicalPath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
                 },
                 new SongInfo
                 {
@@ -106,7 +106,7 @@ namespace MusicPlayer.Data
                     Genre = "Country",
                     BitRate = 725,
                     Extension = "FLAC",
-                    PhysicalPath = @"D:\Muzika\Chip Taylor...This Side Of The Big River(1975)[FLAC]"
+                    PhysicalPath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
                 }
             );
 
@@ -123,7 +123,7 @@ namespace MusicPlayer.Data
                     Genre = "Vocal Jazz",
                     BitRate = 320,
                     Extension = "mp3",
-                    PhysicalPath = @"D:\Muzika\[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
+                    PhysicalPath = @"[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
                 },
                 new SongInfo
                 {
@@ -135,7 +135,7 @@ namespace MusicPlayer.Data
                     Genre = "Vocal Jazz",
                     BitRate = 320,
                     Extension = "mp3",
-                    PhysicalPath = @"D:\Muzika\[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
+                    PhysicalPath = @"[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
                 },
                 new SongInfo
                 {
@@ -147,7 +147,7 @@ namespace MusicPlayer.Data
                     Genre = "Vocal Jazz",
                     BitRate = 320,
                     Extension = "mp3",
-                    PhysicalPath = @"D:\Muzika\[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
+                    PhysicalPath = @"[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
                 }
              );
         }
