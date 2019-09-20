@@ -45,7 +45,7 @@ namespace MusicPlayer.Data.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(50);
 
-                    b.Property<string>("PhysicalPath")
+                    b.Property<string>("RelativePath")
                         .HasMaxLength(255);
 
                     b.Property<int>("TimesPlayed");

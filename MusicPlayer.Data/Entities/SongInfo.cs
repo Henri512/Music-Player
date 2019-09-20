@@ -10,6 +10,8 @@ namespace MusicPlayer.Data.Entities
         [StringLength(50)]
         public string Name { get; set; }
 
+        public int TrackNo { get; set; }
+
         [StringLength(100)]
         public string Author { get; set; }
 
@@ -18,12 +20,13 @@ namespace MusicPlayer.Data.Entities
         [StringLength(30)]
         public string Genre { get; set; }
 
-        public int BitRate { get; set; }
+        [StringLength(20)]
+        public string BitRate { get; set; }
 
         public int TimesPlayed { get; set; }
 
         [StringLength(255)]
-        public string PhysicalPath { get; set; }
+        public string RelativePath { get; set; }
 
         [StringLength(5)]
         public string Extension { get; set; }

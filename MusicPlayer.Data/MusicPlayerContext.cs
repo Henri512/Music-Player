@@ -38,12 +38,12 @@ namespace MusicPlayer.Data
             return base.SaveChanges();
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            using (var seeder = new DbContextSeeder())
-            {
-                seeder.Seed(modelBuilder);
-            }
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    using (var seeder = new DbContextSeeder())
+        //    {
+        //        seeder.Seed(modelBuilder);
+        //    }
+        //}
     }
 }

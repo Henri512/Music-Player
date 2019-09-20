@@ -26,6 +26,13 @@ namespace MusicPlayer.Data.Repositories
             return _songInfoDbSet.Where(s => s.Id == id);
         }
 
+        public IQueryable<SongInfo> GetSongInfoByNameAndPath(string songName, string songPath)
+        {
+            return _songInfoDbSet
+                .Where(t => t.Name.Equals(songName, System.StringComparison.InvariantCultureIgnoreCase)
+                && t.RelativePath.Equals(songPath, System.StringComparison.InvariantCultureIgnoreCase));
+        }
+
         public SongInfo AddSongInfo(SongInfo songInfo)
         {
             return _songInfoDbSet.Add(songInfo).Entity;

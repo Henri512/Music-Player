@@ -1,16 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Serilog;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Serilog.Events;
 
 namespace MusicPlayer.StorageSync
 {
     class Program
     {
-        private static ILogger logger;
+        private static ILogger _logger;
 
         static void Main(string[] args)
         {
@@ -19,7 +16,7 @@ namespace MusicPlayer.StorageSync
                 .Console()
                 .CreateLogger();
 
-            logger = Log.Logger;
+            _logger = Log.Logger;
             try
             {
                 var builder = new ConfigurationBuilder()
@@ -40,13 +37,13 @@ namespace MusicPlayer.StorageSync
                     .Split(',')
                     .Select(t => t.Trim(' '));
 
-                var mediaService = new MediaService(configuration);
+                var mediaService = new MediaService(configuration, _logger);
 
                 mediaService.SynchronizeStorage();
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "An error ocurred during the synchronization.");
+                _logger.Error(ex, "An error ocurred during the synchronization.");
             }
         }
     }

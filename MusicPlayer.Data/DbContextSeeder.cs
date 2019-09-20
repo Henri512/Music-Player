@@ -44,9 +44,9 @@ namespace MusicPlayer.Data
                     Author = "Chip Taylor",
                     Duration = new TimeSpan(0, 3, 17),
                     Genre = "Country",
-                    BitRate = 798,
+                    BitRate = "798kbps",
                     Extension = "FLAC",
-                    PhysicalPath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]",
+                    RelativePath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]",
                 },
                 new SongInfo
                 {
@@ -56,9 +56,9 @@ namespace MusicPlayer.Data
                     Author = "Chip Taylor",
                     Duration = new TimeSpan(0, 2, 47),
                     Genre = "Country",
-                    BitRate = 694,
+                    BitRate = "694kbps",
                     Extension = "FLAC",
-                    PhysicalPath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
+                    RelativePath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
                 },
                 new SongInfo
                 {
@@ -68,9 +68,9 @@ namespace MusicPlayer.Data
                     Author = "Chip Taylor",
                     Duration = new TimeSpan(0, 3, 24),
                     Genre = "Country",
-                    BitRate = 845,
+                    BitRate = "845kbps",
                     Extension = "FLAC",
-                    PhysicalPath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
+                    RelativePath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
                 },
                 new SongInfo
                 {
@@ -80,9 +80,9 @@ namespace MusicPlayer.Data
                     Author = "Chip Taylor",
                     Duration = new TimeSpan(0, 5, 30),
                     Genre = "Country",
-                    BitRate = 751,
+                    BitRate = "751kbps",
                     Extension = "FLAC",
-                    PhysicalPath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
+                    RelativePath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
                 },
                 new SongInfo
                 {
@@ -92,9 +92,9 @@ namespace MusicPlayer.Data
                     Author = "Chip Taylor",
                     Duration = new TimeSpan(0, 3, 17),
                     Genre = "Country",
-                    BitRate = 901,
+                    BitRate = "901kbps",
                     Extension = "FLAC",
-                    PhysicalPath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
+                    RelativePath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
                 },
                 new SongInfo
                 {
@@ -104,9 +104,9 @@ namespace MusicPlayer.Data
                     Author = "Chip Taylor",
                     Duration = new TimeSpan(0, 4, 08),
                     Genre = "Country",
-                    BitRate = 725,
+                    BitRate = "725kbps",
                     Extension = "FLAC",
-                    PhysicalPath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
+                    RelativePath = @"Chip Taylor...This Side Of The Big River(1975)[FLAC]"
                 }
             );
 
@@ -121,9 +121,9 @@ namespace MusicPlayer.Data
                     Author = "Karen Souza",
                     Duration = new TimeSpan(0, 3, 27),
                     Genre = "Vocal Jazz",
-                    BitRate = 320,
+                    BitRate = "320kbps",
                     Extension = "mp3",
-                    PhysicalPath = @"[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
+                    RelativePath = @"[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
                 },
                 new SongInfo
                 {
@@ -133,9 +133,9 @@ namespace MusicPlayer.Data
                     Author = "Karen Souza",
                     Duration = new TimeSpan(0, 4, 6),
                     Genre = "Vocal Jazz",
-                    BitRate = 320,
+                    BitRate = "320kbps",
                     Extension = "mp3",
-                    PhysicalPath = @"[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
+                    RelativePath = @"[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
                 },
                 new SongInfo
                 {
@@ -145,9 +145,9 @@ namespace MusicPlayer.Data
                     Author = "Karen Souza",
                     Duration = new TimeSpan(0, 3, 42),
                     Genre = "Vocal Jazz",
-                    BitRate = 320,
+                    BitRate = "320kbps",
                     Extension = "mp3",
-                    PhysicalPath = @"[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
+                    RelativePath = @"[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)",
                 }
              );
         }

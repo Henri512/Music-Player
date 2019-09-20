@@ -31,7 +31,7 @@ namespace MusicPlayer.Data.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "PhysicalPath",
+                name: "RelativePath",
                 table: "SongInfos",
                 maxLength: 255,
                 nullable: true);
@@ -40,7 +40,7 @@ namespace MusicPlayer.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "PhysicalPath",
+                name: "RelativePath",
                 table: "SongInfos");
 
             migrationBuilder.AlterColumn<string>(

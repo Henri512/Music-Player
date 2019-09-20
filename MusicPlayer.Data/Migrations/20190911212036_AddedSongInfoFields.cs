@@ -33,7 +33,7 @@ namespace MusicPlayer.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "SongInfos",
-                columns: new[] { "Id", "Album", "Author", "BitRate", "Duration", "Extension", "Genre", "Name", "PhysicalPath", "TimesPlayed", "Year" },
+                columns: new[] { "Id", "Album", "Author", "BitRate", "Duration", "Extension", "Genre", "Name", "RelativePath", "TimesPlayed", "Year" },
                 values: new object[,]
                 {
                     { 1, "This Side Of The Big River", "Chip Taylor", 798, new TimeSpan(0, 0, 3, 17, 0), "FLAC", "Country", "01 - Same Ol' Story ", "D:\\Muzika\\Chip Taylor...This Side Of The Big River(1975)[FLAC]", 0, new DateTime(1975, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },

@@ -21,17 +21,17 @@ namespace MusicPlayer.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "SongInfos",
-                columns: new[] { "Id", "AlbumId", "Author", "BitRate", "Created", "Duration", "Extension", "Genre", "LastModified", "Name", "PhysicalPath", "TimesPlayed" },
+                columns: new[] { "Id", "AlbumId", "Author", "BitRate", "Created", "Duration", "Extension", "Genre", "LastModified", "Name", "RelativePath", "TimesPlayed" },
                 values: new object[] { 7, 2, "Karen Souza", 320, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 3, 27, 0), "mp3", "Vocal Jazz", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "01 - The Way It Is", "D:\\Muzika\\[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)", 0 });
 
             migrationBuilder.InsertData(
                 table: "SongInfos",
-                columns: new[] { "Id", "AlbumId", "Author", "BitRate", "Created", "Duration", "Extension", "Genre", "LastModified", "Name", "PhysicalPath", "TimesPlayed" },
+                columns: new[] { "Id", "AlbumId", "Author", "BitRate", "Created", "Duration", "Extension", "Genre", "LastModified", "Name", "RelativePath", "TimesPlayed" },
                 values: new object[] { 8, 2, "Karen Souza", 320, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 4, 6, 0), "mp3", "Vocal Jazz", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "02 - Wicked Game", "D:\\Muzika\\[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)", 0 });
 
             migrationBuilder.InsertData(
                 table: "SongInfos",
-                columns: new[] { "Id", "AlbumId", "Author", "BitRate", "Created", "Duration", "Extension", "Genre", "LastModified", "Name", "PhysicalPath", "TimesPlayed" },
+                columns: new[] { "Id", "AlbumId", "Author", "BitRate", "Created", "Duration", "Extension", "Genre", "LastModified", "Name", "RelativePath", "TimesPlayed" },
                 values: new object[] { 9, 2, "Karen Souza", 320, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 3, 42, 0), "mp3", "Vocal Jazz", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "03 - Everyday Is Like Sunday", "D:\\Muzika\\[Covers-Vocal Jazz] Karen Souza - Essentials II 2014 (Jamal The Moroccan)", 0 });
         }
 
