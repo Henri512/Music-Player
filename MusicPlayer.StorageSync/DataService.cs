@@ -4,17 +4,20 @@ using MusicPlayer.Data;
 using MusicPlayer.Data.Entities;
 using MusicPlayer.Data.Repositories;
 using System.Linq;
+using AutoMapper;
 
 namespace MusicPlayer.StorageSync
 {
     public class DataService
     {
+        private readonly IMapper _mapper;
         private readonly DbContextOptions _dbContextOptions;
         private readonly SongInfoRepository _songInfoRepository;
         private readonly AlbumRepository _albumRepository;
 
-        public DataService(IConfiguration configuration)
+        public DataService(IConfiguration configuration, IMapper mapper)
         {
+            _mapper = mapper;
             _dbContextOptions = new DbContextOptionsBuilder()
                 .UseSqlServer(configuration.GetConnectionString("MusicPlayerCN"))
                 .Options;
@@ -31,7 +34,8 @@ namespace MusicPlayer.StorageSync
                 .SingleOrDefault();
             if(existingSongInfo != null)
             {
-                _songInfoRepository.UpdateSongInfo(songInfo);
+                _mapper.Map(songInfo, existingSongInfo);
+                _songInfoRepository.UpdateSongInfo(existingSongInfo);
             }
             else
             {

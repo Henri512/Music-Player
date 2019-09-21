@@ -8,6 +8,11 @@ namespace MusicPlayer.Data.Entities
 {
     public class Album : BaseEntity
     {
+        public Album()
+        {
+            SongInfos = new List<SongInfo>();
+        }
+
         [StringLength(100)]
         [Required]
         public string Name { get; set; }
@@ -27,7 +32,7 @@ namespace MusicPlayer.Data.Entities
                 var duration = new TimeSpan();
                 if(SongInfos.Any())
                 {
-                    SongInfos.ForEach(si => duration.Add(si.Duration));
+                    SongInfos.ForEach(si =>  duration += duration.Add(si.Duration));
                 }
 
                 return duration;

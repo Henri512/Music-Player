@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Auth;
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Configuration;
+using MusicPlayer.Domain.Profiles;
 using Serilog;
 
 namespace MusicPlayer.StorageSync
@@ -20,7 +22,8 @@ namespace MusicPlayer.StorageSync
         {
             _configuration = configuration;
             _logger = logger;
-            _dataService = new DataService(configuration);
+            _dataService = new DataService(configuration,
+                new Mapper(new MapperConfiguration(t => t.AddMaps(typeof(AlbumModelProfile).Assembly))));
 
             _blobStorageInfo = _configuration
                 .GetSection("BlobStorages")
@@ -33,21 +36,6 @@ namespace MusicPlayer.StorageSync
             _container = cloudBlobClient.GetContainerReference(_blobStorageInfo.ContainerName);
 
             _container.CreateIfNotExists();
-
-            // Regex regex = new Regex(@"\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}");
-            //UploadFile(
-            //    @"D:\Temp\Muzika\Nikad spremni\Razno\Nikad Spremni - Spijunke.mp3",
-            //    @"Muzika\Nikad spremni\Razno\Nikad Spremni - Spijunke.mp3");
-        }
-
-        public async void UploadFile(string filePath, string blobFilePath)
-        {
-            _logger.Information($"Uploading new blob to blob storage...");
-
-            var newBlob = _container.GetBlockBlobReference(blobFilePath);
-            await newBlob.UploadFromFileAsync(filePath);
-
-            _logger.Information($"New blob added, Url: {_blobStorageInfo.Url + blobFilePath}");
         }
 
         public IEnumerable<IListBlobItem> GetAllBlobs()
@@ -68,11 +56,26 @@ namespace MusicPlayer.StorageSync
             }
         }
 
+        public async void UploadFile(string filePath, string blobFilePath)
+        {
+            _logger.Information($"Uploading new blob to blob storage...");
+
+            var newBlob = _container.GetBlockBlobReference(blobFilePath);
+            await newBlob.UploadFromFileAsync(filePath);
+
+            _logger.Information($"New blob added, Url: {_blobStorageInfo.Url + blobFilePath}");
+        }
+
         public bool BlobExists(string blobFilePath)
         {
             return _container
                 .GetBlockBlobReference(blobFilePath)
                 .Exists();
+        }
+
+        public string GetBlobUrl()
+        {
+            return _blobStorageInfo.Url;
         }
     }
 }

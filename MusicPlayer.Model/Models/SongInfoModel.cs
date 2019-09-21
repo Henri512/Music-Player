@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using MusicPlayer.Utilities.Helpers;
 using Newtonsoft.Json;
 
@@ -47,5 +48,15 @@ namespace MusicPlayer.Model.Models
         }
 
         public string FullName => Name + "." + Extension;
+
+        public string AlbumWithoutAYear
+        {
+            get
+            {
+                string regex = "(\\(.*\\))|(\".*\")|('.*')|(\\(.*\\))";
+                string album = Regex.Replace(AlbumName, regex, "");
+                return album;
+            }
+        }
     }
 }

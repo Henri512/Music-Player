@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using Microsoft.WindowsAPICodePack.Shell;
-using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using MusicPlayer.Data.Entities;
+using MusicPlayer.Domain.Profiles;
+using MusicPlayer.FileInfoManager;
 using Serilog;
 using FileIO = System.IO.File;
 
@@ -39,8 +41,10 @@ namespace MusicPlayer.StorageSync
             _logger.Information(
                 $"Parameters: \nSearchFolders: \"{string.Join(',', _searchFolders)}\"\nExtensions: {string.Join(',', _extensions)}\n");
 
+
             var blobService = new BlobService(_configuration, _logger);
-            var dataService = new DataService(_configuration);
+            var dataService = new DataService(_configuration,
+                new Mapper(new MapperConfiguration(t => t.AddMaps(typeof(AlbumModelProfile).Assembly))));
 
             _searchFolders.ForEach(directory =>
             {
@@ -64,69 +68,64 @@ namespace MusicPlayer.StorageSync
             BlobService blobService,
             DataService dataService)
         {
-            var fileName = fileInfo.Name;
-            var directoryAbove = Directory.GetParent(directory);
-            var fileRelativePath = fileInfo.Directory.FullName
-                .Substring(directoryAbove.FullName.Length);
-            var blobFilePath = Path.Combine(fileRelativePath, fileName);
+            try
+            {
+                var fileName = fileInfo.Name;
+                var directoryAbove = Directory.GetParent(directory);
+                var fileRelativePath = fileInfo.Directory.FullName
+                    .Substring(directoryAbove.FullName.Length);
+                var blobFilePath = Path.Combine(fileRelativePath, fileName);
 
-            var properties = ShellFile.FromFilePath(fileInfo.FullName).Properties;
+                var songInfo = GetSongInfo(fileInfo);
 
-            var songInfo = GetSongInfo(properties);
+                songInfo.Extension = fileInfo.Extension;
+                songInfo.RelativePath = fileRelativePath;
+                songInfo.Album.ImagePath = Path.Combine(blobService.GetBlobUrl() + fileRelativePath);
 
-            songInfo.Extension = fileInfo.Extension;
-            songInfo.RelativePath = fileRelativePath;
+                dataService.UpdateSongInfo(songInfo);
 
-            //dataService.UpdateSongInfo(songInfo);
-
-            //blobService.UpdateBlob(blobFilePath, fileInfo.FullName);
+                blobService.UpdateBlob(blobFilePath, fileInfo.FullName);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                _logger.Error(e, "Error occurred while processing file!");
+            }
         }
 
-        private static SongInfo GetSongInfo(ShellProperties properties)
+        private SongInfo GetSongInfo(FileInfo fileInfo)
         {
-            var propertiesNames = properties.DefaultPropertyCollection
-                .Select(t => t.CanonicalName)
-                .ToList();
+            var mediaPropertiesService = new MediaPropertiesService(fileInfo);
 
-            var albumYear = properties
-                    .DefaultPropertyCollection
-                    .FirstOrDefault(p => p.CanonicalName.Equals("System.Media.Year"))
-                    .ValueAsObject.ToString();
+            var author = mediaPropertiesService.GetAuthor(); ;
 
-            var author = string.Join(';', properties.System.Author.Value);
-            
-            var trackNo = properties
-                    .DefaultPropertyCollection
-                    .FirstOrDefault(p => p.CanonicalName.Equals("System.Music.AlbumID"))
-                    .ValueAsObject.ToString();
+            var album = mediaPropertiesService.GetAlbum();
 
-            var bitRate = properties
-                .DefaultPropertyCollection
-                .First(p => p.CanonicalName.Equals("System.Audio.EncodingBitrate"))
-                .ValueAsObject.ToString();
+            var albumYear = mediaPropertiesService.GetAlbumYear(album);
 
-            var genre = properties
-                    .DefaultPropertyCollection
-                    .FirstOrDefault(p => p.CanonicalName.Equals("System.Music.Genre"))
-                    .ValueAsObject;
+            var trackNo = mediaPropertiesService.GetTrackNo();
 
-            var duration = properties
-                    .DefaultPropertyCollection
-                    .FirstOrDefault(p => p.CanonicalName.Equals("System.Media.Duration"))
-                    .ValueAsObject.ToString();
+            var bitRate = mediaPropertiesService.GetBitRate();
 
-            var songName = properties.System.OriginalFileName.Value;
+            var genre = mediaPropertiesService.GetGenre();
+
+            var duration = mediaPropertiesService.GetDuration();
+
+            var songName = mediaPropertiesService.GetSongName(author);
 
             return new SongInfo
             {
                 Album = new Album
                 {
-                    Year = new DateTime(int.Parse(albumYear), 1, 1)
+                    Name = album,
+                    Year = albumYear
                 },
                 Author = author,
                 BitRate = bitRate.Substring(0, bitRate.Length - 3) + "kbps",
-                Genre = string.Join(',', genre as string[]),
-                Name = songName
+                Genre = genre,
+                Name = songName,
+                Duration = duration,
+                TrackNo = trackNo
             };
         }
     }

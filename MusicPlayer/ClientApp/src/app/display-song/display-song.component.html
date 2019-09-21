@@ -17,7 +17,7 @@
             <label name="songAlbumYear">{{ songInfo.albumYear }}</label>
 
             <audio controls (loadstart)="cacheSong(songInfo)" (play)="playSong(songInfo)" (pause)="pauseSong(songInfo)">
-              <source src="../../assets/cache/{{songInfo.fullName}}"  type="audio/{{songInfo.extension}}">
+              <source src="https://sqlva5grykdrvj36ei.blob.core.windows.net/musicblob/Muzika/Nikad%20spremni/Razno/Nikad%20Spremni%20-%20Spijunke.mp3"  type="audio/{{songInfo.extension}}">
             </audio>
 
             <img id="albumImage" src="../{{songInfo.albumImagePath}}" alt="Album logo" style="width:100%;max-width:300px" class="btn btn-info btn-lg" (click)='openModalImg()'>

@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayer.Domain", "Music
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayer.Data", "MusicPlayer.Data\MusicPlayer.Data.csproj", "{5E5C65AC-6E08-4615-A057-D5F10C8097D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayer.StorageSync", "MusicPlayer.StorageSync\MusicPlayer.StorageSync.csproj", "{F82F15CD-4A59-4E0D-B936-54885DED0530}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayer.StorageSync", "MusicPlayer.StorageSync\MusicPlayer.StorageSync.csproj", "{F82F15CD-4A59-4E0D-B936-54885DED0530}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StorageSync", "StorageSync", "{9A964BBB-C7BD-422F-A3AB-8379A6953A56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayer.FileInfoManager", "MusicPlayer.FileInfoManager\MusicPlayer.FileInfoManager.csproj", "{062DA1F1-AA07-47A4-B18A-B563A751EC10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +49,17 @@ Global
 		{F82F15CD-4A59-4E0D-B936-54885DED0530}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F82F15CD-4A59-4E0D-B936-54885DED0530}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F82F15CD-4A59-4E0D-B936-54885DED0530}.Release|Any CPU.Build.0 = Release|Any CPU
+		{062DA1F1-AA07-47A4-B18A-B563A751EC10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{062DA1F1-AA07-47A4-B18A-B563A751EC10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{062DA1F1-AA07-47A4-B18A-B563A751EC10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{062DA1F1-AA07-47A4-B18A-B563A751EC10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F82F15CD-4A59-4E0D-B936-54885DED0530} = {9A964BBB-C7BD-422F-A3AB-8379A6953A56}
+		{062DA1F1-AA07-47A4-B18A-B563A751EC10} = {9A964BBB-C7BD-422F-A3AB-8379A6953A56}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4782303B-F828-4E99-A594-BAB81E044E5F}
