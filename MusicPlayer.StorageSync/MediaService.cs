@@ -55,14 +55,14 @@ namespace MusicPlayer.StorageSync
 
                 files.ForEach(fileInfo =>
                 {
-                    processOneFile(fileInfo, directory, blobService, dataService);
+                    ProcessOneFile(fileInfo, directory, blobService, dataService);
                 });
             });
 
             _logger.Information("Synchronization finished...");
         }
 
-        private void processOneFile(
+        private void ProcessOneFile(
             FileInfo fileInfo,
             string directory,
             BlobService blobService,
@@ -74,13 +74,13 @@ namespace MusicPlayer.StorageSync
                 var directoryAbove = Directory.GetParent(directory);
                 var fileRelativePath = fileInfo.Directory.FullName
                     .Substring(directoryAbove.FullName.Length);
-                var blobFilePath = Path.Combine(fileRelativePath, fileName);
+                var blobFilePath = Path.Combine(fileRelativePath, fileName).TrimStart('/', '\\');
 
-                var songInfo = GetSongInfo(fileInfo);
+                var songInfo = GetSongInfo(fileInfo, dataService, fileRelativePath);
 
-                songInfo.Extension = fileInfo.Extension;
+                songInfo.Extension = fileInfo.Extension.TrimStart('.');
                 songInfo.RelativePath = fileRelativePath;
-                songInfo.Album.ImagePath = Path.Combine(blobService.GetBlobUrl() + fileRelativePath);
+                //songInfo.Album.ImagePath = Path.Combine(blobService.GetBlobUrl() + fileRelativePath);
 
                 dataService.UpdateSongInfo(songInfo);
 
@@ -93,40 +93,42 @@ namespace MusicPlayer.StorageSync
             }
         }
 
-        private SongInfo GetSongInfo(FileInfo fileInfo)
+        private SongInfo GetSongInfo(
+            FileInfo fileInfo,
+            DataService dataService,
+            string relativePath)
         {
             var mediaPropertiesService = new MediaPropertiesService(fileInfo);
+            var author = mediaPropertiesService.GetAuthor();
+            var songName = mediaPropertiesService
+                .GetSongName(author)?
+                .Replace(fileInfo.Extension, "");
 
-            var author = mediaPropertiesService.GetAuthor(); ;
+            var albumName = mediaPropertiesService.GetAlbum();
 
-            var album = mediaPropertiesService.GetAlbum();
-
-            var albumYear = mediaPropertiesService.GetAlbumYear(album);
-
-            var trackNo = mediaPropertiesService.GetTrackNo();
-
-            var bitRate = mediaPropertiesService.GetBitRate();
-
-            var genre = mediaPropertiesService.GetGenre();
-
-            var duration = mediaPropertiesService.GetDuration();
-
-            var songName = mediaPropertiesService.GetSongName(author);
-
-            return new SongInfo
+            var existingSong = dataService.GetSong(songName, relativePath);
+            var songInfo = existingSong ?? new SongInfo
             {
-                Album = new Album
-                {
-                    Name = album,
-                    Year = albumYear
-                },
-                Author = author,
-                BitRate = bitRate.Substring(0, bitRate.Length - 3) + "kbps",
-                Genre = genre,
-                Name = songName,
-                Duration = duration,
-                TrackNo = trackNo
+                Album = dataService.GetAlbum(albumName)?? new Album()
             };
+
+            songInfo.Author = author;
+            songInfo.Name = songName;
+
+            songInfo.Album.Name = albumName;
+
+            songInfo.Album.Year = mediaPropertiesService
+                .GetAlbumYear(songInfo.Album.Name);
+
+            songInfo.TrackNo = mediaPropertiesService.GetTrackNo();
+
+            songInfo.BitRate = mediaPropertiesService.GetBitRate();
+
+            songInfo.Genre = mediaPropertiesService.GetGenre();
+
+            songInfo.Duration = mediaPropertiesService.GetDuration();
+            
+            return songInfo;
         }
     }
 }

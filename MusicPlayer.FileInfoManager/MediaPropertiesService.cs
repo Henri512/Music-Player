@@ -2,48 +2,59 @@
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Microsoft.WindowsAPICodePack.Shell;
-using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
+using TagLib;
+using File = TagLib.File;
 
 namespace MusicPlayer.FileInfoManager
 {
-    public class MediaPropertiesService
+    public class MediaPropertiesService : IDisposable
     {
         private readonly FileInfo _fileInfo;
-        private readonly ShellProperties _properties;
+        private Tag _tag;
+        private File _songFile;
 
         public MediaPropertiesService(FileInfo fileInfo)
         {
             _fileInfo = fileInfo;
 
-            _properties = ShellFile.FromFilePath(fileInfo.FullName).Properties;
+            using (var stream = new StreamReader(fileInfo.FullName))
+            {
+                SetAudioFileAndTag(stream.BaseStream, fileInfo.FullName);
+            }
+        }
+
+        public void SetAudioFileAndTag(Stream stream, string fileName)
+        {
+            //Create a simple file and simple file abstraction
+            var simpleFile = new SimpleFile(fileName, stream);
+            var simpleFileAbstraction = new SimpleFileAbstraction(simpleFile);
+            /////////////////////
+
+            //Create a taglib file from the simple file abstraction
+            _songFile = File.Create(simpleFileAbstraction);
+            _tag = _songFile.Tag;
         }
 
         public string GetAuthor()
         {
-            var author = _fileInfo.Directory.Parent.Name;
+            var author = string.Empty;
+            if (_tag.Performers != null && _tag.Performers.ToList().Any(t => t != ""))
+            {
+                author = string.Join(", ", _tag.Performers);
+            }
+            else
+            {
+                author = _fileInfo.Directory.Parent.Name;
+            }
 
             return author;
         }
 
         public DateTime GetAlbumYear(string albumName)
         {
-            var yearPropertyNames = new[]
-            {
-                "System.DateModified",
-                "System.DateCreated",
-                "System.Document.DateCreated",
-                "System.Document.DateSaved",
-                "System.ItemDate",
-                "System.DateImported"
-            };
+            var albumYear = new DateTime(_tag.Year);
 
-            var albumYear = _properties.DefaultPropertyCollection
-                .Where(p => yearPropertyNames.Contains(p.CanonicalName))
-                .Select(t => DateTime.Parse(t.ValueAsObject.ToString()))
-                .Min();
-
-            var yearFromAlbumString = DateTime.MinValue;
+            DateTime yearFromAlbumString;
 
             if (DateTime.TryParse(Regex
                 .Match(albumName, @"\(([^)]*)\)")
@@ -59,25 +70,9 @@ namespace MusicPlayer.FileInfoManager
             return albumYear;
         }
 
-        private string GetFileProperty(string[] propertyNames)
-        {
-            var propertyValue = string.Empty;
-
-            var property = _properties.DefaultPropertyCollection
-                    .FirstOrDefault(p => propertyNames.Contains(p.CanonicalName));
-            if (property != null)
-            {
-                propertyValue = property.ValueType == typeof(string[]) ?
-                    string.Join(",", property.ValueAsObject as string[])
-                    : property.ValueAsObject?.ToString();
-            }
-
-            return propertyValue;
-        }
-
         public string GetAlbum()
         {
-            var album = GetFileProperty(new [] {"System.Music.AlbumTitle" });
+            var album = _tag.Album;
             if (string.IsNullOrEmpty(album))
             {
                 album = _fileInfo.Directory.Name;
@@ -88,40 +83,48 @@ namespace MusicPlayer.FileInfoManager
 
         public int GetTrackNo()
         {
-            var trackNo = GetFileProperty(new [] { "System.Music.TrackNumber" });
-
-            return int.Parse(trackNo);
+            return (int)_tag.Track;
         }
 
         public string GetBitRate()
         {
-            var trackNo = GetFileProperty(new[] { "System.Audio.EncodingBitrate" });
+            var bitRate = _songFile.Properties.AudioBitrate.ToString();
 
-            return trackNo;
+            bitRate = bitRate.EndsWith("000") ?
+                bitRate.Substring(0, bitRate.Length - 3)
+                : bitRate;
+            bitRate += "kbps";
+
+            return bitRate;
         }
 
         public string GetGenre()
         {
-            var genre = GetFileProperty(new[] { "System.Music.Genre" });
-
-            return genre;
+            return string.Join(", ", _tag.Genres);
         }
 
         public TimeSpan GetDuration()
         {
-            var duration = GetFileProperty(new[] { "System.Media.Duration" });
+            var duration = _songFile.Properties.Duration;
 
-            return new TimeSpan(long.Parse(duration));
+            return duration;
         }
 
         public string GetSongName(string author)
         {
-            var songName = GetFileProperty(new[] { "System.ItemNameDisplay" });
+            var title = _tag.Title;
 
-            return songName
-                .Replace(author, "")
-                .Replace('-', ' ')
-                .Trim();
+            if(string.IsNullOrEmpty(title))
+            {
+                title = _fileInfo.Name;
+            }
+
+            return title;
+        }
+
+        public void Dispose()
+        {
+            _songFile.Dispose();
         }
     }
 }

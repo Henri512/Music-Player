@@ -21,15 +21,14 @@ namespace MusicPlayer.Model.Models
 
         public string Genre { get; set; }
 
-        public int BitRate { get; set; }
+        public string BitRate { get; set; }
 
         public int TimesPlayed { get; set; }
 
-        public string PhysicalPath { get; set; }
+        public string RelativePath { get; set; }
 
         public string Extension { get; set; }
         
-
         public string AlbumName { get; set; }
 
         [JsonConverter(typeof(CustomDateTimeConverter), "yyyy")]
@@ -37,17 +36,15 @@ namespace MusicPlayer.Model.Models
 
         public string AlbumImagePath { get; set; }
 
-        public string FullPath
+        public string FullName
         {
             get
             {
-                if (!string.IsNullOrEmpty(PhysicalPath) && !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Extension))
-                    return Path.Combine(PhysicalPath, Name) + $".{Extension}";
+                if (!string.IsNullOrEmpty(RelativePath) && !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Extension))
+                    return Path.Combine(RelativePath, Name) + $".{Extension}";
                 else return null;
             }
         }
-
-        public string FullName => Name + "." + Extension;
 
         public string AlbumWithoutAYear
         {
@@ -58,5 +55,7 @@ namespace MusicPlayer.Model.Models
                 return album;
             }
         }
+
+        public string BlobFileReference { get; set; }
     }
 }

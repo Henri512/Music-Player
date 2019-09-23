@@ -13,13 +13,13 @@ namespace MusicPlayer.Data.Entities
             SongInfos = new List<SongInfo>();
         }
 
-        [StringLength(100)]
+        [StringLength(300)]
         [Required]
         public string Name { get; set; }
 
         public DateTime Year { get; set; }
 
-        [StringLength(255)]
+        [StringLength(300)]
         public string ImagePath { get; set; }
 
         public List<SongInfo> SongInfos { get; set; }

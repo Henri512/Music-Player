@@ -70,11 +70,12 @@ interface SongInfo {
   author: string;
   duration: Time;
   genre: string;
-  bitRate: number;
+  bitRate: string;
   timesPlayed: number;
   albumName: string;
   albumYear: Date;
   albumImagePath: string;
   fullPath: string;
   fullName: string;
+  blobFileReference: string;
 }

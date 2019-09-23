@@ -7,6 +7,7 @@ namespace MusicPlayer.Data.Repositories
     {
         Album AddAlbum(Album album);
         IQueryable<Album> GetAlbumById(int id);
+        IQueryable<Album> GetAlbum(string albumName);
         IQueryable<Album> GetAlbums();
         int Save();
         void UpdateAlbum(Album album);

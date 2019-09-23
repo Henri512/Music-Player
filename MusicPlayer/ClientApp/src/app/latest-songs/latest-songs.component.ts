@@ -24,16 +24,6 @@ export class LatestSongsComponent implements OnInit {
       this.latestSongs = result;
     }, error => console.error(error));
   }
-
-  playSong(songInfo: SongInfo) {
-    // timer should be started here
-  }
-
-  pauseSong(songInfo: SongInfo) {
-    // if song is already playing for some time(30 seconds for an example) or more
-    // we will increase the playCount of that song in the database
-  }
-
 }
 
 interface SongInfo {
@@ -42,7 +32,7 @@ interface SongInfo {
   author: string;
   duration: Time;
   genre: string;
-  bitRate: number;
+  bitRate: string;
   timesPlayed: number;
   albumName: string;
   albumYear: Date;

@@ -48,37 +48,6 @@ namespace MusicPlayer.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<byte[]>> GetSongFile(int id)
-        {
-            var songInfo = _songInfoService.GetSongInfoById(id, false);
-            var fileReader = FileIO.OpenRead(songInfo.FullPath);
-            var songData = new byte[fileReader.Length];
-            await fileReader.ReadAsync(songData);
-
-            return new ActionResult<byte[]>(songData);
-        }
-
-        [HttpGet]
-        public ActionResult<bool> CacheSongFile(int id, string cacheFolder)
-        {
-            var result = false;
-            var songInfo = _songInfoService.GetSongInfoById(id, false);
-            if (songInfo == null)
-                return NotFound("Song does not exist!");
-            var cachedSongPath = Path.Combine(cacheFolder, songInfo.FullName);
-            if (!FileIO.Exists(cachedSongPath))
-            {
-                var fileReader = FileIO.OpenRead(songInfo.FullPath);
-                var songData = new byte[fileReader.Length];
-                fileReader.Read(songData);
-
-                FileIO.WriteAllBytes(Path.Combine(@"ClientApp/src/" + cachedSongPath.TrimStart('.')), songData);
-                result = true;
-            }
-            return new ActionResult<bool>(result);
-        }
-
-        [HttpGet]
         public ActionResult<string> GetSongFileUrl(string songFullPath)
         {
             var blobStoragePath = _configuration.GetSection("BlobStorages").GetValue<string>("SongsBlobUrl");

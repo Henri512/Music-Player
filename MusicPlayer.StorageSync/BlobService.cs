@@ -56,14 +56,15 @@ namespace MusicPlayer.StorageSync
             }
         }
 
-        public async void UploadFile(string filePath, string blobFilePath)
+        public void UploadFile(string filePath, string blobFilePath)
         {
             _logger.Information($"Uploading new blob to blob storage...");
 
-            var newBlob = _container.GetBlockBlobReference(blobFilePath);
-            await newBlob.UploadFromFileAsync(filePath);
+            var newBlob = _container
+                .GetBlockBlobReference(blobFilePath);
+            newBlob.UploadFromFile(filePath);
 
-            _logger.Information($"New blob added, Url: {_blobStorageInfo.Url + blobFilePath}");
+            _logger.Information($"New blob added, Url: {newBlob.Uri}");
         }
 
         public bool BlobExists(string blobFilePath)

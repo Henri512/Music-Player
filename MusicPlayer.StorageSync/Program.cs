@@ -40,6 +40,8 @@ namespace MusicPlayer.StorageSync
                 var mediaService = new MediaService(configuration, _logger);
 
                 mediaService.SynchronizeStorage();
+
+                Console.ReadLine();
             }
             catch (Exception ex)
             {

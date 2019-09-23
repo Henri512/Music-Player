@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MusicPlayer.Data.Entities;
 
@@ -39,6 +40,14 @@ namespace MusicPlayer.Data.Repositories
         public int Save()
         {
             return _musicPlayerContext.SaveChanges();
+        }
+
+        public IQueryable<Album> GetAlbum(string albumName)
+        {
+            return _albumDbSet
+                .Where(t => t.Name
+                .Equals(
+                    albumName, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

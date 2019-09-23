@@ -16,11 +16,11 @@
             <label name="songAlbum">{{ songInfo.albumName }}</label>
             <label name="songAlbumYear">{{ songInfo.albumYear }}</label>
 
-            <audio controls (loadstart)="cacheSong(songInfo)" (play)="playSong(songInfo)" (pause)="pauseSong(songInfo)">
-              <source src="https://sqlva5grykdrvj36ei.blob.core.windows.net/musicblob/Muzika/Nikad%20spremni/Razno/Nikad%20Spremni%20-%20Spijunke.mp3"  type="audio/{{songInfo.extension}}">
+            <audio controls (play)="playSong(songInfo)" (pause)="pauseSong(songInfo)">
+              <source src="{{songInfo.blobFileReference}}"  type="audio/{{songInfo.extension}}">
             </audio>
 
-            <img id="albumImage" src="../{{songInfo.albumImagePath}}" alt="Album logo" style="width:100%;max-width:300px" class="btn btn-info btn-lg" (click)='openModalImg()'>
+            <img id="albumImage" src="{{songInfo.albumImagePath}}" alt="Album logo" style="width:100%;max-width:300px" class="btn btn-info btn-lg" (click)='openModalImg()'>
             <div class="backdrop" [ngStyle]="{'display':display}"></div>
             <div class="modal" tabindex="-1" role='dialog'  [ngStyle]="{'display':display}" style="background: transparent;">
               <div class="modal-dialog modal-lg">
@@ -30,7 +30,7 @@
                     <h4 class="modal-title">{{ songInfo.albumName }}</h4>
                   </div>
                   <div class="modal-body">
-                      <img src="../{{songInfo.albumImagePath}}" class="img-responsive" style="width: 100%;">
+                      <img src="{{songInfo.albumImagePath}}" class="img-responsive" style="width: 100%;">
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-default" (click)='onCloseHandled()'>Close</button>

@@ -7,17 +7,17 @@ namespace MusicPlayer.Data.Entities
     {
         public int? AlbumId { get; set; }
 
-        [StringLength(50)]
+        [StringLength(300)]
         public string Name { get; set; }
 
         public int TrackNo { get; set; }
 
-        [StringLength(100)]
+        [StringLength(300)]
         public string Author { get; set; }
 
         public TimeSpan Duration { get; set; }
 
-        [StringLength(30)]
+        [StringLength(100)]
         public string Genre { get; set; }
 
         [StringLength(20)]
@@ -25,7 +25,7 @@ namespace MusicPlayer.Data.Entities
 
         public int TimesPlayed { get; set; }
 
-        [StringLength(255)]
+        [StringLength(300)]
         public string RelativePath { get; set; }
 
         [StringLength(5)]

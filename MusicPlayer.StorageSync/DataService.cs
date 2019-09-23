@@ -5,6 +5,7 @@ using MusicPlayer.Data.Entities;
 using MusicPlayer.Data.Repositories;
 using System.Linq;
 using AutoMapper;
+using System;
 
 namespace MusicPlayer.StorageSync
 {
@@ -43,6 +44,26 @@ namespace MusicPlayer.StorageSync
             }
 
             _songInfoRepository.Save();
+        }
+
+        public SongInfo GetSong(string name, string relativePath)
+        {
+            SongInfo songInfo = null;
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(relativePath))
+            {
+                songInfo = _songInfoRepository
+                .GetSongInfoByNameAndPath(name, relativePath)
+                .Include(t => t.Album)
+                .SingleOrDefault();
+            }
+            return songInfo;
+        }
+
+        public Album GetAlbum(string albumName)
+        {
+            return _albumRepository
+                .GetAlbum(albumName)
+                .SingleOrDefault();
         }
     }
 }
