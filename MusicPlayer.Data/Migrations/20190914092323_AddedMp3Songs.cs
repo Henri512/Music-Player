@@ -11,12 +11,12 @@ namespace MusicPlayer.Data.Migrations
                 table: "Albums",
                 keyColumn: "Id",
                 keyValue: 1,
-                column: "ImagePath",
+                column: "ImagePaths",
                 value: ".../assets/album-logo-1.jpg");
 
             migrationBuilder.InsertData(
                 table: "Albums",
-                columns: new[] { "Id", "Created", "ImagePath", "LastModified", "Name", "Year" },
+                columns: new[] { "Id", "Created", "ImagePaths", "LastModified", "Name", "Year" },
                 values: new object[] { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ".../assets/album-logo-2.jpeg", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Essentials II", new DateTime(2014, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.InsertData(
@@ -61,7 +61,7 @@ namespace MusicPlayer.Data.Migrations
                 table: "Albums",
                 keyColumn: "Id",
                 keyValue: 1,
-                column: "ImagePath",
+                column: "ImagePaths",
                 value: null);
         }
     }

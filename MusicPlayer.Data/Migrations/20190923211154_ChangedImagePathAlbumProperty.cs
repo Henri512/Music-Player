@@ -7,7 +7,7 @@ namespace MusicPlayer.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "ImagePath",
+                name: "ImagePaths",
                 table: "Albums",
                 maxLength: 1000,
                 nullable: true,
@@ -19,7 +19,7 @@ namespace MusicPlayer.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "ImagePath",
+                name: "ImagePaths",
                 table: "Albums",
                 maxLength: 300,
                 nullable: true,

@@ -108,12 +108,12 @@ namespace MusicPlayer.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Albums",
-                columns: new[] { "Id", "Created", "ImagePath", "LastModified", "Name", "Year" },
+                columns: new[] { "Id", "Created", "ImagePaths", "LastModified", "Name", "Year" },
                 values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "../assets/album-logo-1.jpg", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "This Side Of The Big River", new DateTime(1975, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.InsertData(
                 table: "Albums",
-                columns: new[] { "Id", "Created", "ImagePath", "LastModified", "Name", "Year" },
+                columns: new[] { "Id", "Created", "ImagePaths", "LastModified", "Name", "Year" },
                 values: new object[] { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "../assets/album-logo-2.jpeg", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Essentials II", new DateTime(2014, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.InsertData(

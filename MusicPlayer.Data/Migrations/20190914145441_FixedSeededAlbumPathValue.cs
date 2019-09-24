@@ -10,14 +10,14 @@ namespace MusicPlayer.Data.Migrations
                 table: "Albums",
                 keyColumn: "Id",
                 keyValue: 1,
-                column: "ImagePath",
+                column: "ImagePaths",
                 value: "../assets/album-logo-1.jpg");
 
             migrationBuilder.UpdateData(
                 table: "Albums",
                 keyColumn: "Id",
                 keyValue: 2,
-                column: "ImagePath",
+                column: "ImagePaths",
                 value: "../assets/album-logo-2.jpeg");
         }
 
@@ -27,14 +27,14 @@ namespace MusicPlayer.Data.Migrations
                 table: "Albums",
                 keyColumn: "Id",
                 keyValue: 1,
-                column: "ImagePath",
+                column: "ImagePaths",
                 value: ".../assets/album-logo-1.jpg");
 
             migrationBuilder.UpdateData(
                 table: "Albums",
                 keyColumn: "Id",
                 keyValue: 2,
-                column: "ImagePath",
+                column: "ImagePaths",
                 value: ".../assets/album-logo-2.jpeg");
         }
     }

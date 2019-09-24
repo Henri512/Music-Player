@@ -122,7 +122,7 @@ namespace MusicPlayer.StorageSync
             var existingSong = dataService.GetSong(songName, relativePath);
             var songInfo = existingSong ?? new SongInfo
             {
-                Album = dataService.GetAlbum(albumName) ?? new Album()
+                Album = dataService.GetAlbum(albumName, author) ?? new Album()
             };
 
             songInfo.Author = author;

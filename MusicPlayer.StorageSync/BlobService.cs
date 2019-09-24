@@ -18,6 +18,7 @@ namespace MusicPlayer.StorageSync
         private readonly BlobStorageInfo _blobStorageInfo;
         private readonly CloudBlobContainer _container;
         private readonly ILogger _logger;
+        private readonly List<CloudBlockBlob> _blobList;
 
         public BlobService(IConfiguration configuration, ILogger logger)
         {
@@ -29,7 +30,7 @@ namespace MusicPlayer.StorageSync
             _blobStorageInfo = _configuration
                 .GetSection("BlobStorages")
                 .Get<BlobStorageInfo[]>().First();
-            
+
             var storageCredentials = new StorageCredentials(_blobStorageInfo.AccountName, _blobStorageInfo.AccountKey);
             var cloudStorageAccount = new CloudStorageAccount(storageCredentials, true);
             var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
@@ -37,6 +38,8 @@ namespace MusicPlayer.StorageSync
             _container = cloudBlobClient.GetContainerReference(_blobStorageInfo.ContainerName);
 
             _container.CreateIfNotExists();
+
+            _blobList = GetAllBlobs(cloudBlobClient).ToList();
         }
 
         public IEnumerable<IListBlobItem> GetAllBlobs()
@@ -47,7 +50,7 @@ namespace MusicPlayer.StorageSync
 
         public void UpdateBlob(string blobFilePath, string filePathOnSystem)
         {
-            if(BlobExists(blobFilePath))
+            if (BlobExists(blobFilePath))
             {
                 _logger.Information($"Blob with Url: {_blobStorageInfo.Url + blobFilePath} already exist");
             }
@@ -56,7 +59,7 @@ namespace MusicPlayer.StorageSync
                 UploadFile(filePathOnSystem, blobFilePath);
             }
         }
-        
+
         public void UpdateImageBlob(string blobFilePath, string filePathOnSystem)
         {
             var blobFileUrl = Path.Combine(_blobStorageInfo.Url
@@ -64,7 +67,7 @@ namespace MusicPlayer.StorageSync
                 + blobFilePath.Replace('\\', '/'));
             if (BlobExists(blobFileUrl))
             {
-                _logger.Information($"Blob with Url: {blobFileUrl} already exist");               
+                _logger.Information($"Image with Url: {blobFileUrl} already exist");
             }
             else
             {
@@ -75,25 +78,43 @@ namespace MusicPlayer.StorageSync
 
         public void UploadFile(string filePath, string blobFilePath)
         {
-            _logger.Information($"Uploading new blob to blob storage...");
+            _logger.Information($"Uploading new file to blob storage...");
 
             var newBlob = _container
                 .GetBlockBlobReference(blobFilePath);
             newBlob.UploadFromFile(filePath);
 
-            _logger.Information($"New blob added, Url: {newBlob.Uri}");
+            _logger.Information($"New file added, Url: {newBlob.Uri}");
         }
 
         public bool BlobExists(string blobFilePath)
         {
-            return _container
-                .GetBlockBlobReference(blobFilePath)
-                .Exists();
+            return _blobList
+                .Any(t => t.Name == blobFilePath.Replace('\\', '/'));
         }
 
         public string GetBlobUrl()
         {
             return _blobStorageInfo.Url;
+        }
+
+        private IEnumerable<CloudBlockBlob> GetAllBlobs(CloudBlobClient blobClient)
+        {
+            var container = blobClient.GetContainerReference(_blobStorageInfo.ContainerName);
+            BlobContinuationToken continuationToken = null;
+
+            do
+            {
+                var response = container
+                    .ListBlobsSegmented(string.Empty, true,
+                        BlobListingDetails.None, new int?(),
+                        continuationToken, null, null);
+                continuationToken = response.ContinuationToken;
+                foreach (var blob in response.Results.OfType<CloudBlockBlob>())
+                {
+                    yield return blob;
+                }
+            } while (continuationToken != null);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace MusicPlayer.Data.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<string>("ImagePath")
+                    b.Property<string>("ImagePaths")
                         .HasMaxLength(1000);
 
                     b.Property<DateTime>("LastModified");

@@ -51,7 +51,7 @@ namespace MusicPlayer.Data.Migrations
                 oldMaxLength: 100);
 
             migrationBuilder.AlterColumn<string>(
-                name: "ImagePath",
+                name: "ImagePaths",
                 table: "Albums",
                 maxLength: 300,
                 nullable: true,
@@ -107,7 +107,7 @@ namespace MusicPlayer.Data.Migrations
                 oldMaxLength: 300);
 
             migrationBuilder.AlterColumn<string>(
-                name: "ImagePath",
+                name: "ImagePaths",
                 table: "Albums",
                 maxLength: 255,
                 nullable: true,

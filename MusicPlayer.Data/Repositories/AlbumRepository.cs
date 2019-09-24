@@ -42,12 +42,14 @@ namespace MusicPlayer.Data.Repositories
             return _musicPlayerContext.SaveChanges();
         }
 
-        public IQueryable<Album> GetAlbum(string albumName)
+        public IQueryable<Album> GetAlbum(string albumName, string author)
         {
             return _albumDbSet
                 .Where(t => t.Name
                 .Equals(
-                    albumName, StringComparison.InvariantCultureIgnoreCase));
+                    albumName, StringComparison.InvariantCultureIgnoreCase)
+                && t.Author
+                .Equals(author, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

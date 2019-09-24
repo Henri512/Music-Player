@@ -8,7 +8,11 @@ namespace MusicPlayer.Domain.Profiles
     {
         public AlbumModelProfile()
         {
-            this.CreateMap<Album, AlbumModel>();
+            this.CreateMap<Album, AlbumModel>()
+                .ForMember(m => m.ImagePaths, opt =>
+                opt.MapFrom(s => string.IsNullOrEmpty(s.ImagePath) ?
+                null : s.ImagePath.Split(';',
+                                    System.StringSplitOptions.None))); ;
         }
     }
 }

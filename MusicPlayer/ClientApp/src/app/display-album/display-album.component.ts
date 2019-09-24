@@ -24,6 +24,14 @@ export class DisplayAlbumComponent implements OnInit {
     this.http.get<Album>(url).subscribe(result => {
       this.album = of(result).pipe();
     }, error => console.error(error));
+  }  
+
+  openModalImg(){
+    this.display = 'block';
+  }
+
+  onCloseHandled(){  
+    this.display = 'none';
   }
 }
 
@@ -31,7 +39,7 @@ interface Album{
   id: number;
   name: string;
   year: Date;
-  ImagePath: string[];  
+  ImagePaths: string[];  
   SongInfos: Observable<SongInfo>;
 }
 

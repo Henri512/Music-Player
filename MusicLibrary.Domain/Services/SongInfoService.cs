@@ -11,30 +11,17 @@ using MusicPlayer.Model.Services;
 
 namespace MusicPlayer.Domain.Services
 {
-    public class SongInfoService : ISongInfoService
+    public class SongInfoService : GlobalService, ISongInfoService
     {
         private readonly ISongInfoRepository _songInfoRepository;
-        private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
-        private readonly string _blobStorageUrl;
-        private readonly string _defaultAlbumLogoImageUrl;
-        private readonly string _imageBlobFolderUrl;
 
         public SongInfoService(
             ISongInfoRepository songInfoRepository,
             IMapper mapper,
             IConfiguration configuration)
+            : base(mapper, configuration)
         {
             _songInfoRepository = songInfoRepository;
-            _mapper = mapper;
-            _configuration = configuration;
-            var blobSection = _configuration.GetSection("BlobStorage");
-            _blobStorageUrl = blobSection
-                .GetValue<string>("SongsBlobUrl") ?? string.Empty;
-            _defaultAlbumLogoImageUrl = blobSection
-                .GetValue<string>("DefaultAlbumLogoImageUrl") ?? string.Empty;
-            _imageBlobFolderUrl = blobSection
-                .GetValue<string>("ImagesFolder") ?? string.Empty;
         }
 
         public IEnumerable<SongInfoModel> GetSongInfos(bool includeAlbum)
@@ -98,27 +85,6 @@ namespace MusicPlayer.Domain.Services
             songInfo.TimesPlayed++;
             _songInfoRepository.UpdateSongInfo(songInfo);
             return _songInfoRepository.Save() > 0;
-        }
-
-        private string[] GetAlbumImagesUrls(string[] albumImages)
-        {
-            return albumImages
-                .Select(i => GetImageBlobFileUriLocation(i))
-                .ToArray();
-        }
-
-        private string GetBlobFileUriLocation(string fileName)
-        {
-            return new Uri(_blobStorageUrl +
-                        fileName.Replace('\\', '/'))
-                .OriginalString;
-        }
-
-        private string GetImageBlobFileUriLocation(string fileName)
-        {
-            return new Uri(_blobStorageUrl + "/" + _imageBlobFolderUrl
-                        + fileName.Replace('\\', '/'))
-                .OriginalString;
         }
     }
 }

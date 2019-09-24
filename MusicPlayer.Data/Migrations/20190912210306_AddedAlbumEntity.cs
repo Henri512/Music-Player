@@ -38,7 +38,7 @@ namespace MusicPlayer.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Albums",
-                columns: new[] { "Id", "ImagePath", "Name", "Year" },
+                columns: new[] { "Id", "ImagePaths", "Name", "Year" },
                 values: new object[] { 1, null, "This Side Of The Big River", new DateTime(1975, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.UpdateData(

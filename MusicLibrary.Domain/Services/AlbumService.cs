@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MusicPlayer.Data.Entities;
 using MusicPlayer.Data.Repositories;
 using MusicPlayer.Model.Models;
@@ -9,22 +10,35 @@ using MusicPlayer.Model.Services;
 
 namespace MusicPlayer.Domain.Services
 {
-    public class AlbumService : IAlbumService
+    public class AlbumService : GlobalService, IAlbumService
     {
         private readonly IAlbumRepository _albumRepository;
-        private readonly IMapper _mapper;
 
-        public AlbumService(IAlbumRepository albumRepository, IMapper mapper)
+        public AlbumService(IAlbumRepository albumRepository,
+            IMapper mapper, IConfiguration configuration)
+            : base(mapper, configuration)
         {
             _albumRepository = albumRepository;
-            _mapper = mapper;
         }
 
         public IEnumerable<AlbumModel> GetAlbums(bool includeSongInfos)
         {
             var albums = includeSongInfos ? _albumRepository.GetAlbums()
                 .Include(a => a.SongInfos) : _albumRepository.GetAlbums();
-            return _mapper.Map<IEnumerable<AlbumModel>>(albums.ToList());
+            var albumModels = _mapper
+                .Map<IEnumerable<AlbumModel>>(albums.ToList())
+                .ToList();
+
+            albumModels.ForEach(m =>
+            {
+                m.ImagePaths =
+                    m.ImagePaths != null
+                    && m.ImagePaths.Any() ?
+                         GetAlbumImagesUrls(m.ImagePaths)
+                        : new string[] { _defaultAlbumLogoImageUrl };
+            });
+
+            return albumModels;
         }
 
         public AlbumModel GetAlbumById(int id, bool includeSongInfos)
@@ -32,7 +46,14 @@ namespace MusicPlayer.Domain.Services
             var album = includeSongInfos ? 
                 _albumRepository.GetAlbumById(id).Include(a => a.SongInfos)
                 : _albumRepository.GetAlbumById(id);
-            return _mapper.Map<AlbumModel>(album.FirstOrDefault());
+            var albumModel = _mapper.Map<AlbumModel>(album.FirstOrDefault());
+
+            albumModel.ImagePaths =
+                albumModel.ImagePaths != null
+                && albumModel.ImagePaths.Any() ?
+                     GetAlbumImagesUrls(albumModel.ImagePaths)
+                    : new string[] { _defaultAlbumLogoImageUrl };
+            return albumModel;
         }
 
         public AlbumModel AddAlbum(AlbumModel albumModel)

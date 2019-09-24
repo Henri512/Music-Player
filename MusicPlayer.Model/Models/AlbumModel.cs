@@ -16,7 +16,7 @@ namespace MusicPlayer.Model.Models
         [JsonConverter(typeof(CustomDateTimeConverter), "yyyy")]
         public DateTime Year { get; set; }
 
-        public string ImagePath { get; set; }
+        public string[] ImagePaths { get; set; }
 
         public List<SongInfoModel> SongInfos { get; set; }
     }
