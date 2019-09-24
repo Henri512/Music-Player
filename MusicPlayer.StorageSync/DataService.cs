@@ -14,6 +14,8 @@ namespace MusicPlayer.StorageSync
         private readonly DbContextOptions _dbContextOptions;
         private readonly SongInfoRepository _songInfoRepository;
         private readonly AlbumRepository _albumRepository;
+        private readonly IGenericRepository<SongInfo> _songInfoGenericRepository;
+        private readonly IGenericRepository<Album> _albumGenericRepository;
 
         public DataService(IConfiguration configuration, IMapper mapper)
         {
@@ -25,6 +27,11 @@ namespace MusicPlayer.StorageSync
 
             _songInfoRepository = new SongInfoRepository(musicPlayerContext);
             _albumRepository = new AlbumRepository(musicPlayerContext);
+
+            _songInfoGenericRepository =
+                _songInfoRepository as IGenericRepository<SongInfo>;
+            _albumGenericRepository =
+                _albumRepository as IGenericRepository<Album>;
         }
 
         public void UpdateSongInfo(SongInfo songInfo)
@@ -35,11 +42,11 @@ namespace MusicPlayer.StorageSync
             if(existingSongInfo != null)
             {
                 _mapper.Map(songInfo, existingSongInfo);
-                _songInfoRepository.UpdateSongInfo(existingSongInfo);
+                _songInfoGenericRepository.Update(existingSongInfo);
             }
             else
             {
-                _songInfoRepository.AddSongInfo(songInfo);
+                _songInfoGenericRepository.Add(songInfo);
             }
 
             _songInfoRepository.Save();
