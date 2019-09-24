@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using AutoMapper;
 using Microsoft.Azure.Storage;
@@ -44,15 +45,31 @@ namespace MusicPlayer.StorageSync
             return _container.ListBlobs().ToList();
         }
 
-        public void UpdateBlob(string bloblFilePath, string filePathOnSystem)
+        public void UpdateBlob(string blobFilePath, string filePathOnSystem)
         {
-            if(BlobExists(bloblFilePath))
+            if(BlobExists(blobFilePath))
             {
-                _logger.Information($"Blob with Url: {_blobStorageInfo.Url + bloblFilePath} already exist");
+                _logger.Information($"Blob with Url: {_blobStorageInfo.Url + blobFilePath} already exist");
             }
             else
             {
-                UploadFile(filePathOnSystem, bloblFilePath);
+                UploadFile(filePathOnSystem, blobFilePath);
+            }
+        }
+        
+        public void UpdateImageBlob(string blobFilePath, string filePathOnSystem)
+        {
+            var blobFileUrl = Path.Combine(_blobStorageInfo.Url
+                + _blobStorageInfo.ImagesFolder
+                + blobFilePath.Replace('\\', '/'));
+            if (BlobExists(blobFileUrl))
+            {
+                _logger.Information($"Blob with Url: {blobFileUrl} already exist");               
+            }
+            else
+            {
+                UploadFile(filePathOnSystem,
+                _blobStorageInfo.ImagesFolder + blobFilePath);
             }
         }
 

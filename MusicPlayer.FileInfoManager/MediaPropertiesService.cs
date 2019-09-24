@@ -126,5 +126,16 @@ namespace MusicPlayer.FileInfoManager
         {
             _songFile.Dispose();
         }
+
+        public string GetImagePath(string relativePath)
+        {
+            var directoryHelper = new DirectoryHelper();
+
+            var filters = new string[] 
+            { "jpg", "jpeg", "png", "gif", "tiff", "bmp", "svg" };
+
+            return string.Join(";", directoryHelper
+                .GetFiles(_fileInfo.Directory, filters, true));
+        }
     }
 }

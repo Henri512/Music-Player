@@ -9,5 +9,7 @@
         public string AccountKey { get; set; }
 
         public string ContainerName { get; set; }
+
+        public string ImagesFolder { get; set; }        
     }
 }

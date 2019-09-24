@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20190921073011_AddedRelativePathSongInfoField.cs" />
     <Compile Remove="Migrations\20190921073011_AddedRelativePathSongInfoField.Designer.cs" />
+    <Compile Remove="Migrations\20190923210822_ChangedImagePathAlbumProperty.cs" />
+    <Compile Remove="Migrations\20190923210822_ChangedImagePathAlbumProperty.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

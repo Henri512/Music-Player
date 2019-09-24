@@ -36,7 +36,7 @@ interface SongInfo {
   timesPlayed: number;
   albumName: string;
   albumYear: Date;
-  albumImagePath: string;
+  albumImagePath: string[];
   fullPath: string;
   fullName: string;
 }

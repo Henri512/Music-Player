@@ -1,89 +1,40 @@
-<!--The content below is only a placeholder and can be replaced.
-<div style="text-align:center">
-  <h1 style="margin-top:10px;">
-    Welcome to music player!
-  </h1>
-  
-  <div class="container">
-    <div *ngIf="songInfo | async as songInfo; else loading;">
-
-      <div class="row">
-          <div class="">
-            Latest songs in the database
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-4">          
-              
-
-              <img id="albumImage" src="{{songInfo.albumImagePath}}" alt="Album logo" style="width:100%;max-width:300px" class="img-responsive" (click)='openModalImg()'>
-              
-              <div class="modal" tabindex="-1" role='dialog'  [ngStyle]="{'display':display}" style="background: transparent;">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h4 class="modal-title">{{ songInfo.albumName }}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <img src="{{songInfo.albumImagePath}}" class="img-responsive" style="width: 100%;" (click)='onCloseHandled()'>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            
-          </div>
-          <div class="col-sm-8">
-              <label name="songName">{{ songInfo.name }}</label>
-              <label name="songAuthor">{{ songInfo.author }}</label>
-              <label name="songAlbum">{{ songInfo.albumName }}</label>
-              <label name="songAlbumYear">{{ songInfo.albumYear }}</label>
-
-              <audio controls (play)="playSong(songInfo)" (pause)="pauseSong(songInfo)">
-                <source src="{{songInfo.blobFileReference}}"  type="audio/{{songInfo.extension}}">
-              </audio>
-          </div>
-
-        </div>
-      </div>
-
-      </div>
-      <ng-template #loading>Loading User Data...</ng-template> 
-    </div>
-  </div>
-
-
--->
-
 <h1 class="header text-center">Welcome to music player!</h1>
 <div *ngIf="songInfo | async as songInfo; else loading;">
-    <div class="container-fluid bg text-center">
+  <div class="container-fluid bg text-center">
 
-        <h3 class="info">
-            <label name="songName">{{ songInfo.name }}</label>
-            <label name="songAuthor">{{ songInfo.author }}</label>&nbsp;
-            <label name="songAlbum">{{ songInfo.albumName }}</label>&nbsp;
-            <label name="songAlbumYear">{{ songInfo.albumYear }}</label>
-        </h3>
+    <div class="info">
+      <div name="songName">{{ songInfo.name }}</div>
+      <div name="songAuthor">{{ songInfo.author }}</div>
+      <div name="songAlbum">{{ songInfo.albumName }}</div>
+      <div *ngIf="songInfo.albumYear" name="songAlbumYear">{{ songInfo.albumYear }}</div>
+    </div>
 
-        <img src="{{songInfo.albumImagePath}}" class="img-responsive pic" style="display:inline" alt="Bird" width="350" height="350" (click)='openModalImg()'>
+    <div *ngFor="let image of songInfo.albumImagePath">
+      <div class="responsive">
+        <div class="gallery">
+          <img src="{{image}}" alt="Album cover" (click)='openModalImg()' class="img-responsive pic" style="display:inline" width="600" height="400">
+          <div class="desc">{{ songInfo.albumName }}</div>
+        </div>
+      </div>
 
-        <audio controls (play)="playSong(songInfo)" (pause)="pauseSong(songInfo)">
-            <source src="{{songInfo.blobFileReference}}"  type="audio/{{songInfo.extension}}">
-        </audio>        
-              
-        <div class="modal" tabindex="-1" role='dialog'  [ngStyle]="{'display':display}" style="background: transparent;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-body">
-                  <img src="{{songInfo.albumImagePath}}" class="img-responsive" style="width: 100%;" (click)='onCloseHandled()'>
-              </div>
+      <div class="modal" tabindex="-1" role='dialog' [ngStyle]="{'display':display}" style="background: transparent;">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-body">
+              <img src="{{image}}" class="img-responsive" style="width: 100%;" (click)='onCloseHandled()'>
             </div>
           </div>
         </div>
-
+      </div>
     </div>
+    <!--<img src="{{songInfo.albumImagePath}}" class="img-responsive pic" style="display:inline" alt="Bird" width="350" height="350" (click)='openModalImg()'>-->
+
+    <audio controls (play)="playSong(songInfo)" (pause)="pauseSong(songInfo)">
+      <source src="{{songInfo.blobFileReference}}" type="audio/{{songInfo.extension}}">
+    </audio>
+
+  </div>
 </div>
 
-<ng-template #loading>Loading User Data...</ng-template> 
+<ng-template #loading>Loading User Data...</ng-template>
 

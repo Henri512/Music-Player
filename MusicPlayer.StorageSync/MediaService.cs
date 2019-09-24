@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using MusicPlayer.Data.Entities;
 using MusicPlayer.Domain.Profiles;
 using MusicPlayer.FileInfoManager;
 using Serilog;
-using FileIO = System.IO.File;
 
 namespace MusicPlayer.StorageSync
 {
@@ -41,10 +39,10 @@ namespace MusicPlayer.StorageSync
             _logger.Information(
                 $"Parameters: \nSearchFolders: \"{string.Join(',', _searchFolders)}\"\nExtensions: {string.Join(',', _extensions)}\n");
 
-
             var blobService = new BlobService(_configuration, _logger);
             var dataService = new DataService(_configuration,
-                new Mapper(new MapperConfiguration(t => t.AddMaps(typeof(AlbumModelProfile).Assembly))));
+                new Mapper(new MapperConfiguration(t => 
+                t.AddMaps(typeof(AlbumModelProfile).Assembly))));
 
             _searchFolders.ForEach(directory =>
             {
@@ -74,17 +72,32 @@ namespace MusicPlayer.StorageSync
                 var directoryAbove = Directory.GetParent(directory);
                 var fileRelativePath = fileInfo.Directory.FullName
                     .Substring(directoryAbove.FullName.Length);
-                var blobFilePath = Path.Combine(fileRelativePath, fileName).TrimStart('/', '\\');
+                var blobFilePath = Path
+                    .Combine(fileRelativePath, fileName)
+                    .TrimStart('/', '\\');
+                fileRelativePath = Path
+                    .Combine(fileRelativePath, fileInfo.Name);
 
                 var songInfo = GetSongInfo(fileInfo, dataService, fileRelativePath);
 
                 songInfo.Extension = fileInfo.Extension.TrimStart('.');
                 songInfo.RelativePath = fileRelativePath;
-                //songInfo.Album.ImagePath = Path.Combine(blobService.GetBlobUrl() + fileRelativePath);
 
                 dataService.UpdateSongInfo(songInfo);
 
                 blobService.UpdateBlob(blobFilePath, fileInfo.FullName);
+
+                if (!string.IsNullOrEmpty(songInfo.Album.ImagePath))
+                {
+                    songInfo.Album.ImagePath.Split(';')
+                        .ToList().ForEach(i =>
+                        {
+                            var physicalPath = Path
+                            .Combine(fileInfo.DirectoryName, i);
+                            blobService
+                            .UpdateImageBlob(i, physicalPath);
+                        });
+                }
             }
             catch (Exception e)
             {
@@ -109,7 +122,7 @@ namespace MusicPlayer.StorageSync
             var existingSong = dataService.GetSong(songName, relativePath);
             var songInfo = existingSong ?? new SongInfo
             {
-                Album = dataService.GetAlbum(albumName)?? new Album()
+                Album = dataService.GetAlbum(albumName) ?? new Album()
             };
 
             songInfo.Author = author;
@@ -127,7 +140,10 @@ namespace MusicPlayer.StorageSync
             songInfo.Genre = mediaPropertiesService.GetGenre();
 
             songInfo.Duration = mediaPropertiesService.GetDuration();
-            
+
+            songInfo.Album.ImagePath = mediaPropertiesService
+                .GetImagePath(relativePath.Replace(fileInfo.Name, ""));
+
             return songInfo;
         }
     }

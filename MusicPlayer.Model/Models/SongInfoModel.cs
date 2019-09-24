@@ -34,18 +34,8 @@ namespace MusicPlayer.Model.Models
         [JsonConverter(typeof(CustomDateTimeConverter), "yyyy")]
         public DateTime AlbumYear { get; set; }
 
-        public string AlbumImagePath { get; set; }
-
-        public string FullName
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(RelativePath) && !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Extension))
-                    return Path.Combine(RelativePath, Name) + $".{Extension}";
-                else return null;
-            }
-        }
-
+        public string[] AlbumImagePath { get; set; }
+        
         public string AlbumWithoutAYear
         {
             get

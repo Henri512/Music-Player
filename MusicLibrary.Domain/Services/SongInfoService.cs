@@ -18,6 +18,7 @@ namespace MusicPlayer.Domain.Services
         private readonly IConfiguration _configuration;
         private readonly string _blobStorageUrl;
         private readonly string _defaultAlbumLogoImageUrl;
+        private readonly string _imageBlobFolderUrl;
 
         public SongInfoService(
             ISongInfoRepository songInfoRepository,
@@ -32,41 +33,47 @@ namespace MusicPlayer.Domain.Services
                 .GetValue<string>("SongsBlobUrl") ?? string.Empty;
             _defaultAlbumLogoImageUrl = blobSection
                 .GetValue<string>("DefaultAlbumLogoImageUrl") ?? string.Empty;
+            _imageBlobFolderUrl = blobSection
+                .GetValue<string>("ImagesFolder") ?? string.Empty;
         }
 
         public IEnumerable<SongInfoModel> GetSongInfos(bool includeAlbum)
         {
             var songInfos = includeAlbum ? _songInfoRepository.GetSongInfos().Include(s => s.Album) : _songInfoRepository.GetSongInfos();
-            
+
             var songInfoModels = _mapper
                 .Map<IEnumerable<SongInfoModel>>(songInfos.ToList())
                 .ToList();
             songInfoModels
                 .ForEach(
-                s => {
-                    s.BlobFileReference =
-                    new Uri(_blobStorageUrl +
-                        s.FullName.Replace('\\', '/')).OriginalString;
-                    s.AlbumImagePath = string.IsNullOrEmpty(s.AlbumImagePath)?
-                    _defaultAlbumLogoImageUrl
-                    : s.AlbumImagePath;
-                    });
+                s =>
+                {
+                    s.BlobFileReference = GetBlobFileUriLocation(s.RelativePath);
+
+                    s.AlbumImagePath = s.AlbumImagePath != null
+                    && s.AlbumImagePath.Any() ?
+                        GetAlbumImagesUrls(s.AlbumImagePath)
+                        : new string[] { _defaultAlbumLogoImageUrl };
+                });
 
             return songInfoModels;
         }
 
         public SongInfoModel GetSongInfoById(int id, bool includeAlbum)
         {
-            var songInfo = includeAlbum ? _songInfoRepository.GetSongInfoById(id).Include(s => s.Album) : _songInfoRepository.GetSongInfoById(id);
-            var songInfoModel = _mapper.Map<SongInfoModel>(songInfo.FirstOrDefault());
-            songInfoModel.BlobFileReference = 
-                new Uri(_blobStorageUrl +
-                        songInfoModel.FullName.Replace('\\', '/'))
-                .OriginalString;
-            songInfoModel.AlbumImagePath = string
-                .IsNullOrEmpty(songInfoModel.AlbumImagePath)?
-                    _defaultAlbumLogoImageUrl
-                    : songInfoModel.AlbumImagePath;
+            var songInfo = includeAlbum ?
+                _songInfoRepository.GetSongInfoById(id).Include(s => s.Album)
+                : _songInfoRepository.GetSongInfoById(id);
+            var songInfoModel = _mapper.Map<SongInfoModel>(
+                songInfo.FirstOrDefault());
+            songInfoModel.BlobFileReference = GetBlobFileUriLocation(
+                songInfoModel.RelativePath);
+
+            songInfoModel.AlbumImagePath =
+                songInfoModel.AlbumImagePath != null
+                && songInfoModel.AlbumImagePath.Any() ?
+                     GetAlbumImagesUrls(songInfoModel.AlbumImagePath)
+                    : new string[] { _defaultAlbumLogoImageUrl };
 
             return songInfoModel;
         }
@@ -74,15 +81,18 @@ namespace MusicPlayer.Domain.Services
         public SongInfoModel AddSongInfo(SongInfoModel songInfoModel)
         {
             var songInfo = _mapper.Map<SongInfo>(songInfoModel);
-            return _mapper.Map<SongInfoModel>(_songInfoRepository.AddSongInfo(songInfo));
+            return _mapper.Map<SongInfoModel>(
+                _songInfoRepository.AddSongInfo(songInfo));
         }
 
         public bool SongPlayed(int id)
         {
-            var songInfo = _songInfoRepository.GetSongInfoById(id).FirstOrDefault();
+            var songInfo = _songInfoRepository
+                .GetSongInfoById(id)
+                .FirstOrDefault();
             if (songInfo == null)
             {
-                throw  new Exception("Song does not exist!");
+                throw new Exception("Song does not exist!");
             }
 
             songInfo.TimesPlayed++;
@@ -90,10 +100,24 @@ namespace MusicPlayer.Domain.Services
             return _songInfoRepository.Save() > 0;
         }
 
-        private string GetUrl(string songFullName)
+        private string[] GetAlbumImagesUrls(string[] albumImages)
+        {
+            return albumImages
+                .Select(i => GetImageBlobFileUriLocation(i))
+                .ToArray();
+        }
+
+        private string GetBlobFileUriLocation(string fileName)
         {
             return new Uri(_blobStorageUrl +
-                        songFullName.Replace('\\', '/'))
+                        fileName.Replace('\\', '/'))
+                .OriginalString;
+        }
+
+        private string GetImageBlobFileUriLocation(string fileName)
+        {
+            return new Uri(_blobStorageUrl + "/" + _imageBlobFolderUrl
+                        + fileName.Replace('\\', '/'))
                 .OriginalString;
         }
     }

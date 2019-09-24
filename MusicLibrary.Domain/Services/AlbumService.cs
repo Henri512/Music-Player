@@ -22,13 +22,16 @@ namespace MusicPlayer.Domain.Services
 
         public IEnumerable<AlbumModel> GetAlbums(bool includeSongInfos)
         {
-            var albums = includeSongInfos ? _albumRepository.GetAlbums().Include(a => a.SongInfos) : _albumRepository.GetAlbums();
+            var albums = includeSongInfos ? _albumRepository.GetAlbums()
+                .Include(a => a.SongInfos) : _albumRepository.GetAlbums();
             return _mapper.Map<IEnumerable<AlbumModel>>(albums.ToList());
         }
 
         public AlbumModel GetAlbumById(int id, bool includeSongInfos)
         {
-            var album = includeSongInfos ? _albumRepository.GetAlbumById(id).Include(a => a.SongInfos) : _albumRepository.GetAlbumById(id);
+            var album = includeSongInfos ? 
+                _albumRepository.GetAlbumById(id).Include(a => a.SongInfos)
+                : _albumRepository.GetAlbumById(id);
             return _mapper.Map<AlbumModel>(album.FirstOrDefault());
         }
 

@@ -19,7 +19,7 @@ namespace MusicPlayer.Data.Entities
 
         public DateTime Year { get; set; }
 
-        [StringLength(300)]
+        [StringLength(1000)]
         public string ImagePath { get; set; }
 
         public List<SongInfo> SongInfos { get; set; }
