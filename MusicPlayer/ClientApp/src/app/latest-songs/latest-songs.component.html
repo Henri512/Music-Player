@@ -32,10 +32,10 @@
                     <td>{{ songInfo.name }}</td>
                     <td>{{ songInfo.author }}</td>
                     <td>
-                      <a href="#">{{ songInfo.albumName }}</a>
+                      <a routerLink="/display-album/{{songInfo.albumId}}">{{ songInfo.albumName }}</a>
                     </td>
                     <td>
-                      <a routerLink="/displaySong/{{songInfo.id}}">Song details</a>
+                      <a routerLink="/display-song/{{songInfo.id}}">Song details</a>
                     </td>
                     <td>{{ songInfo.albumYear  }} </td>
                     <td>{{ songInfo.duration }}</td>

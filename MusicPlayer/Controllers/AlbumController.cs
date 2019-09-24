@@ -17,19 +17,19 @@ namespace MusicPlayer.Controllers
             _albumService = albumService;
         }
 
-        [HttpGet("[action]")]
+        [HttpGet]
         public ActionResult<IEnumerable<AlbumModel>> GetAlbums(bool includeSongInfos = false)
         {
             return new ActionResult<IEnumerable<AlbumModel>>(_albumService.GetAlbums(includeSongInfos));
         }
 
-        [HttpGet("[action]")]
+        [HttpGet]
         public ActionResult<AlbumModel> GetAlbumById(int id, bool includeSongInfos = false)
         {
             return new ActionResult<AlbumModel>(_albumService.GetAlbumById(id, includeSongInfos));
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public ActionResult<AlbumModel> AddAlbum(AlbumModel album)
         {
             return new ActionResult<AlbumModel>(_albumService.AddAlbum(album));

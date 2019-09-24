@@ -7,7 +7,11 @@ namespace MusicPlayer.Model.Models
 {
     public class AlbumModel
     {
+        public int Id { get; private set; }
+
         public string Name { get; set; }
+
+        public string Author { get; set; }
 
         [JsonConverter(typeof(CustomDateTimeConverter), "yyyy")]
         public DateTime Year { get; set; }

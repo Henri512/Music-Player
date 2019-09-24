@@ -129,9 +129,10 @@ namespace MusicPlayer.StorageSync
             songInfo.Name = songName;
 
             songInfo.Album.Name = albumName;
+            songInfo.Album.Author = author;
 
             songInfo.Album.Year = mediaPropertiesService
-                .GetAlbumYear(songInfo.Album.Name);
+                .GetAlbumYear(songInfo.Album.Name, fileInfo.DirectoryName);
 
             songInfo.TrackNo = mediaPropertiesService.GetTrackNo();
 

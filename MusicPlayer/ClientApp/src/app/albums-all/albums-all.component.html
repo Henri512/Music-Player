@@ -1,0 +1,36 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1 style="margin-top:10px;">
+    Album list
+  </h1>
+  <div class="card" style="margin-left:50px; margin-right:50px; margin-bottom:50px;">
+    <div class="card-header" style="font-weight:bold; font-size:x-large;">
+      Displaying all of the albums
+    </div>
+    <div class="card-body">
+      <div class="table-responsive" style="max-height:385px;">
+        <table class="table mb-0 darkTable" *ngIf="albums && albums.length>0">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Name</th>
+              <th>Author</th>
+              <th>Year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let album of albums; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>
+                <a class="link link-underline-effect" routerLink="/display-album/{{album.id}}">{{ album.name }}</a></td>
+              <td>{{ album.author }}</td>
+              <td>{{ album.year }} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

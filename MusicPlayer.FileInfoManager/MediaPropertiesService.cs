@@ -50,20 +50,17 @@ namespace MusicPlayer.FileInfoManager
             return author;
         }
 
-        public DateTime GetAlbumYear(string albumName)
+        public DateTime GetAlbumYear(string albumName, string directoryName)
         {
             var albumYear = new DateTime(_tag.Year);
 
-            DateTime yearFromAlbumString;
-
-            if (DateTime.TryParse(Regex
-                .Match(albumName, @"\(([^)]*)\)")
-                .Groups[1]
-                .Value, out yearFromAlbumString))
+            if (albumYear == DateTime.MinValue)
             {
-                if (yearFromAlbumString < albumYear)
+                var dateHelper = new DateHelper();
+                albumYear = dateHelper.GetDateTimeFromString(albumName);
+                if(albumYear == DateTime.MinValue)
                 {
-                    albumYear = yearFromAlbumString;
+                    albumYear = dateHelper.GetDateTimeFromString(directoryName);
                 }
             }
 

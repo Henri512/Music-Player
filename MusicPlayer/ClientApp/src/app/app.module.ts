@@ -10,12 +10,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { AlertModule } from 'ngx-bootstrap';
 import { DisplaySongComponent } from './display-song/display-song.component';
 import { LatestSongsComponent } from './latest-songs/latest-songs.component';
+import { AlbumsAllComponent } from './albums-all/albums-all.component';
+import { DisplayAlbumComponent } from './display-album/display-album.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DisplaySongComponent,
-    LatestSongsComponent
+    LatestSongsComponent,
+    AlbumsAllComponent,
+    DisplayAlbumComponent
   ],
   imports: [
     BrowserModule,

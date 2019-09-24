@@ -25,6 +25,9 @@ namespace MusicPlayer.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Author")
+                        .HasMaxLength(200);
+
                     b.Property<DateTime>("Created");
 
                     b.Property<string>("ImagePath")

@@ -8,7 +8,7 @@ namespace MusicPlayer.Model.Models
 {
     public class SongInfoModel
     {
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
         public int? AlbumId { get; set; }
 

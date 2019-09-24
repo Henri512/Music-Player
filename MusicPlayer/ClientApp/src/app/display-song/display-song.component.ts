@@ -27,23 +27,6 @@ export class DisplaySongComponent implements OnInit {
     }, error => console.error(error));
   }
 
-  cacheSong(songInfo: SongInfo) {
-    console.log("Kesiranje pesme " + songInfo.name);
-
-    var url = 'api/SongInfo/CacheSongFile?id=' + songInfo.id + "&cacheFolder=../assets/cache/";
-    this.http.get<boolean>(url).subscribe(result => {
-      if (result) {
-        console.log("Song cached!");
-      } else {
-        console.log("Song already exist!");
-      }
-    }, error => console.error(error));
-  }
-
-  getDecodedSongPath(songFullName: string): string {
-    return decodeURIComponent('../assets/cache/' + songFullName);
-  }
-
   playSong(songInfo: SongInfo) {
     console.log("Song playing");
     // timer should be started here
