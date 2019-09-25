@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using MusicPlayer.Data.Entities;
 using System.Linq;
+using MusicPlayer.Model.Models;
 
 namespace MusicPlayer.Data.Repositories
 {
@@ -17,7 +19,7 @@ namespace MusicPlayer.Data.Repositories
 
         public IQueryable<T> Get()
         {
-            return _dbSet;
+            return _dbSet.AsNoTracking();
         }
 
         public IQueryable<T> GetById(int id)

@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MusicPlayer.Data.Entities;
+using MusicPlayer.Model.Models;
 
 namespace MusicPlayer.Data.Repositories
 {

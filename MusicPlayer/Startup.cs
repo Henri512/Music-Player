@@ -13,6 +13,7 @@ using MusicPlayer.Data.Repositories;
 using MusicPlayer.Domain.Profiles;
 using MusicPlayer.Domain.Services;
 using MusicPlayer.Model.Services;
+using MusicPlayer.Utilities.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -44,13 +45,15 @@ namespace MusicPlayer
                     var settings = options.SerializerSettings;
                     settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     // dont mess with case of properties
-                    var resolver = options.SerializerSettings.ContractResolver as DefaultContractResolver;
+                    var resolver = options.SerializerSettings.ContractResolver
+                        as DefaultContractResolver;
                     resolver.NamingStrategy = new CamelCaseNamingStrategy();
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<MusicPlayerContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("MusicPlayerCN")));
+                    options.UseSqlServer(
+                        Configuration.GetConnectionString("MusicPlayerCN")));
 
             services.AddAutoMapper(typeof(AlbumModelProfile));
 
@@ -59,6 +62,8 @@ namespace MusicPlayer
 
             services.AddTransient<IAlbumService, AlbumService>();
             services.AddTransient<ISongInfoService, SongInfoService>();
+
+            services.AddTransient<IExpressionHelper, ExpressionHelper>();
 
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<MusicPlayerContext>();
@@ -83,7 +88,8 @@ namespace MusicPlayer
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime.
+        // Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

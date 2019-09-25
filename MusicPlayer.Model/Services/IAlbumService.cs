@@ -8,5 +8,7 @@ namespace MusicPlayer.Model.Services
         AlbumModel AddAlbum(AlbumModel album);
         AlbumModel GetAlbumById(int id, bool includeSongInfos);
         IEnumerable<AlbumModel> GetAlbums(bool includeSongInfos);
+        IEnumerable<AlbumModel> GetAlbumByFilter(
+            string propertyName, string comparison, string value);
     }
 }

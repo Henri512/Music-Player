@@ -30,7 +30,8 @@ namespace MusicPlayer.Domain.Services
         public IEnumerable<SongInfoModel> GetSongInfos(bool includeAlbum)
         {
             var songInfos = includeAlbum ?
-                _songInfoGenericRepository.Get().Include(s => s.Album) 
+                _songInfoGenericRepository.Get()
+                    .Include(s => s.Album) 
                 : _songInfoGenericRepository.Get();
 
             var songInfoModels = _mapper

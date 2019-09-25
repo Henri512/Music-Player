@@ -40,8 +40,12 @@ namespace MusicPlayer.Model.Models
         {
             get
             {
-                string regex = "(\\(.*\\))|(\".*\")|('.*')|(\\(.*\\))";
-                string album = Regex.Replace(AlbumName, regex, "");
+                var album = string.Empty;
+                if (!string.IsNullOrEmpty(AlbumName))
+                {
+                    var regex = "(\\(.*\\))|(\".*\")|('.*')|(\\(.*\\))";
+                    album = Regex.Replace(AlbumName, regex, "");
+                }
                 return album;
             }
         }
