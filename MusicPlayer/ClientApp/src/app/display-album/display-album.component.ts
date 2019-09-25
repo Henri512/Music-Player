@@ -10,7 +10,7 @@ import { Time } from '@angular/common';
   styleUrls: ['./display-album.component.css']
 })
 export class DisplayAlbumComponent implements OnInit {
-  display: string = 'none';
+  display: string[];
   id: string;
   album: Observable<Album>;
   constructor(private _activatedRoute: ActivatedRoute, private http: HttpClient) { }
@@ -23,15 +23,21 @@ export class DisplayAlbumComponent implements OnInit {
     var url = 'api/Album/GetAlbumById?id=' + this.id + "&includeSongInfos=true";
     this.http.get<Album>(url).subscribe(result => {
       this.album = of(result).pipe();
+      var length = 0;
+      this.album.subscribe(val => length = val.ImagePaths.length);
+      this.display = new Array(length);
+      for(let i = 0; i < length ; i++){
+        this.display[i] = 'none';
+      }
     }, error => console.error(error));
   }  
 
-  openModalImg(){
-    this.display = 'block';
+  openModalImg(i: number){
+    this.display[i] = 'block';
   }
 
-  onCloseHandled(){  
-    this.display = 'none';
+  onCloseHandled(i: number){  
+    this.display[i] = 'none';
   }
 }
 

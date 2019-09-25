@@ -11,7 +11,7 @@ import { Observable, of } from 'rxjs';
 })
 
 export class DisplaySongComponent implements OnInit {
-  display: string = 'none';
+  display: string[];
   id: string;
   songInfo: Observable<SongInfo>;
   constructor(private _activatedRoute: ActivatedRoute, private http: HttpClient) { }
@@ -24,6 +24,12 @@ export class DisplaySongComponent implements OnInit {
     var url = 'api/SongInfo/GetSongInfoById?id=' + this.id + "&includeAlbum=true";
     this.http.get<SongInfo>(url).subscribe(result => {
       this.songInfo = of(result).pipe(); 
+      var length = 0;
+      this.songInfo.subscribe(val => length = val.albumImagePath.length);
+      this.display = new Array(length);
+      for(let i = 0; i < length ; i++){
+        this.display[i] = 'none';
+      }
     }, error => console.error(error));
   }
 
@@ -38,12 +44,12 @@ export class DisplaySongComponent implements OnInit {
     // we will increase the playCount of that song in the database
   }
 
-  openModalImg(){
-    this.display = 'block';
+  openModalImg(i:number){
+    this.display[i] = 'block';
   }
 
-  onCloseHandled(){  
-    this.display = 'none';
+  onCloseHandled(i:number){  
+    this.display[i] = 'none';
   }
 }
 
