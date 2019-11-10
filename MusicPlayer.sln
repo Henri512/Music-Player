@@ -5,11 +5,7 @@ VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayer", "MusicPlayer\MusicPlayer.csproj", "{9D968A54-FE52-4F96-B922-9F8A5C32315A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayer.Model", "MusicPlayer.Model\MusicPlayer.Model.csproj", "{82BE9EFF-A00D-4DEB-BDE9-D4B5A3AF1653}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayer.Utilities", "MusicPlayer.Utilities\MusicPlayer.Utilities.csproj", "{D084B17E-A9A6-4D7D-87CF-DFF3BD18ACF3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayer.Domain", "MusicLibrary.Domain\MusicPlayer.Domain.csproj", "{6FE7B431-BF86-4811-B847-742A4D1392C2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayer.Data", "MusicPlayer.Data\MusicPlayer.Data.csproj", "{5E5C65AC-6E08-4615-A057-D5F10C8097D0}"
 EndProject
@@ -18,6 +14,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StorageSync", "StorageSync", "{9A964BBB-C7BD-422F-A3AB-8379A6953A56}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayer.FileInfoManager", "MusicPlayer.FileInfoManager\MusicPlayer.FileInfoManager.csproj", "{062DA1F1-AA07-47A4-B18A-B563A751EC10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayer.Core", "MusicPlayer.Core\MusicPlayer.Core.csproj", "{2F56A9C5-09B3-4C47-8AF5-730CF2F54A04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayer.Infrastructure", "MusicPlayer.Infrastructure\MusicPlayer.Infrastructure.csproj", "{7B1C0669-BEA9-4DB7-BE90-F7332B774274}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{628E73F3-5941-4671-AC48-418951C0E541}"
+	ProjectSection(SolutionItems) = preProject
+		Environment Variables.txt = Environment Variables.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,18 +34,10 @@ Global
 		{9D968A54-FE52-4F96-B922-9F8A5C32315A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D968A54-FE52-4F96-B922-9F8A5C32315A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D968A54-FE52-4F96-B922-9F8A5C32315A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82BE9EFF-A00D-4DEB-BDE9-D4B5A3AF1653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82BE9EFF-A00D-4DEB-BDE9-D4B5A3AF1653}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82BE9EFF-A00D-4DEB-BDE9-D4B5A3AF1653}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82BE9EFF-A00D-4DEB-BDE9-D4B5A3AF1653}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D084B17E-A9A6-4D7D-87CF-DFF3BD18ACF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D084B17E-A9A6-4D7D-87CF-DFF3BD18ACF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D084B17E-A9A6-4D7D-87CF-DFF3BD18ACF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D084B17E-A9A6-4D7D-87CF-DFF3BD18ACF3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6FE7B431-BF86-4811-B847-742A4D1392C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FE7B431-BF86-4811-B847-742A4D1392C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FE7B431-BF86-4811-B847-742A4D1392C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FE7B431-BF86-4811-B847-742A4D1392C2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E5C65AC-6E08-4615-A057-D5F10C8097D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E5C65AC-6E08-4615-A057-D5F10C8097D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E5C65AC-6E08-4615-A057-D5F10C8097D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,6 +50,14 @@ Global
 		{062DA1F1-AA07-47A4-B18A-B563A751EC10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{062DA1F1-AA07-47A4-B18A-B563A751EC10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{062DA1F1-AA07-47A4-B18A-B563A751EC10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F56A9C5-09B3-4C47-8AF5-730CF2F54A04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F56A9C5-09B3-4C47-8AF5-730CF2F54A04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F56A9C5-09B3-4C47-8AF5-730CF2F54A04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F56A9C5-09B3-4C47-8AF5-730CF2F54A04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B1C0669-BEA9-4DB7-BE90-F7332B774274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B1C0669-BEA9-4DB7-BE90-F7332B774274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B1C0669-BEA9-4DB7-BE90-F7332B774274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B1C0669-BEA9-4DB7-BE90-F7332B774274}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

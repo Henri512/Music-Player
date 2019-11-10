@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Album = MusicPlayer.Data.Entities.Album;
-using BaseEntity = MusicPlayer.Data.Entities.BaseEntity;
-using SongInfo = MusicPlayer.Data.Entities.SongInfo;
+using MusicPlayer.Data.Profiles;
+using Album = MusicPlayer.Core.Albums.Album;
+using BaseEntity = MusicPlayer.Core.BaseEntity;
+using SongInfo = MusicPlayer.Core.SongInfos.SongInfo;
 
 namespace MusicPlayer.Data
 {
@@ -38,12 +39,9 @@ namespace MusicPlayer.Data
             return base.SaveChanges();
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    using (var seeder = new DbContextSeeder())
-        //    {
-        //        seeder.Seed(modelBuilder);
-        //    }
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AlbumProfile).Assembly);
+        }
     }
 }

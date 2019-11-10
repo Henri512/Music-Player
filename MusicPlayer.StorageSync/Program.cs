@@ -11,8 +11,8 @@ namespace MusicPlayer.StorageSync
             try
             {
                 var builder = new ConfigurationBuilder()
-                    .AddJsonFile("appsettings.development.json",
-                                optional: false, reloadOnChange: true);
+                    .AddJsonFile("appsettings.development.json")
+                    .AddEnvironmentVariables();
 
                 IConfigurationRoot configuration = builder.Build();
 

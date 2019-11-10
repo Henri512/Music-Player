@@ -3,8 +3,8 @@ using System.IO;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using MusicPlayer.Model.Models;
-using MusicPlayer.Model.Services;
+using MusicPlayer.Core.SongInfos;
+using MusicPlayer.Infrastructure.SongInfos;
 
 namespace MusicPlayer.Controllers
 {
@@ -22,30 +22,30 @@ namespace MusicPlayer.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<SongInfoModel>> GetSongInfos(
+        public ActionResult<IEnumerable<SongInfoDto>> GetSongInfos(
                                                     bool includeAlbum = false)
         {
-            return new ActionResult<IEnumerable<SongInfoModel>>(
+            return new ActionResult<IEnumerable<SongInfoDto>>(
                 _songInfoService.GetSongInfos(includeAlbum));
         }
 
         [HttpGet]
-        public ActionResult<SongInfoModel> GetSongInfoById(int id,
+        public ActionResult<SongInfoDto> GetSongInfoById(int id,
                                                     bool includeAlbum = false)
         {
-            return new ActionResult<SongInfoModel>(
+            return new ActionResult<SongInfoDto>(
                 _songInfoService.GetSongInfoById(id, includeAlbum));
         }
 
         [HttpPost]
-        public ActionResult<SongInfoModel> AddSongInfo(SongInfoModel songInfo)
+        public ActionResult<SongInfoDto> AddSongInfo(SongInfoDto songInfo)
         {
-            return new ActionResult<SongInfoModel>(
+            return new ActionResult<SongInfoDto>(
                 _songInfoService.AddSongInfo(songInfo));
         }
 
         [HttpPatch]
-        public ActionResult<bool> SongPlayed([FromBody]SongInfoModel songInfo)
+        public ActionResult<bool> SongPlayed([FromBody]SongInfoDto songInfo)
         {
             return new ActionResult<bool>(
                 _songInfoService.SongPlayed(songInfo.Id));

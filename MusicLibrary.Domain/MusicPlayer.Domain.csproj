@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MusicPlayer.Data\MusicPlayer.Data.csproj" />
-    <ProjectReference Include="..\MusicPlayer.Model\MusicPlayer.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>

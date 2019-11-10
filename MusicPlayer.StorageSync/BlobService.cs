@@ -1,35 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using AutoMapper;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Auth;
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Configuration;
-using MusicPlayer.Domain.Profiles;
 using Serilog;
 
 namespace MusicPlayer.StorageSync
 {
     public class BlobService
     {
-        private readonly IConfiguration _configuration;
-        private readonly DataService _dataService;
         private readonly BlobStorageInfo _blobStorageInfo;
         private readonly CloudBlobContainer _container;
         private readonly ILogger _logger;
         private readonly List<CloudBlockBlob> _blobList;
 
-        public BlobService(IConfiguration configuration, ILogger logger)
+        public BlobService(ILogger logger)
         {
-            _configuration = configuration;
             _logger = logger;
-            _dataService = new DataService(configuration,
-                new Mapper(new MapperConfiguration(t => t.AddMaps(typeof(AlbumModelProfile).Assembly))));
 
-            _blobStorageInfo = _configuration
-                .GetSection("BlobStorages")
-                .Get<BlobStorageInfo[]>().First();
+            var environmentPath = Environment
+                .GetEnvironmentVariable("Blobs__MusicPlayer", EnvironmentVariableTarget.Machine);
+            var sections = environmentPath.Split(';');
+            var sectionsDictionary = sections
+                .ToDictionary(k => k.Substring(0, k.IndexOf('=')), v => v.Substring(v.IndexOf('=')+1));
+
+            _blobStorageInfo = new BlobStorageInfo
+            {
+                AccountKey = sectionsDictionary["AccountKey"],
+                ContainerName = sectionsDictionary["ContainerName"],
+                Url =  sectionsDictionary["Url"],
+                AccountName = sectionsDictionary["AccountName"],
+                ImagesFolder = sectionsDictionary["ImagesFolder"]
+            };
 
             var storageCredentials = new StorageCredentials(_blobStorageInfo.AccountName, _blobStorageInfo.AccountKey);
             var cloudStorageAccount = new CloudStorageAccount(storageCredentials, true);

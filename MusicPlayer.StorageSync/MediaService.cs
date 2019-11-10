@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using MusicPlayer.Data.Entities;
-using MusicPlayer.Domain.Profiles;
+using MusicPlayer.Core.Albums;
+using MusicPlayer.Core.SongInfos;
 using MusicPlayer.FileInfoManager;
 using Serilog;
 
@@ -39,10 +38,8 @@ namespace MusicPlayer.StorageSync
             _logger.Information(
                 $"Parameters: \nSearchFolders: \"{string.Join(',', _searchFolders)}\"\nExtensions: {string.Join(',', _extensions)}\n");
 
-            var blobService = new BlobService(_configuration, _logger);
-            var dataService = new DataService(_configuration,
-                new Mapper(new MapperConfiguration(t => 
-                t.AddMaps(typeof(AlbumModelProfile).Assembly))));
+            var blobService = new BlobService(_logger);
+            var dataService = new DataService(_configuration);
 
             _searchFolders.ForEach(directory =>
             {
@@ -70,7 +67,7 @@ namespace MusicPlayer.StorageSync
             {
                 var fileName = fileInfo.Name;
                 var directoryAbove = Directory.GetParent(directory);
-                var fileRelativePath = fileInfo.Directory.FullName
+                var fileRelativePath = fileInfo.Directory?.FullName
                     .Substring(directoryAbove.FullName.Length);
                 var blobFilePath = Path
                     .Combine(fileRelativePath, fileName)

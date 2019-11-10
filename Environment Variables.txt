@@ -1,0 +1,8 @@
+Set Environment variable:
+Connection String
+	[Environment]::SetEnvironmentVariable("ConnectionStrings__MusicPlayerCN", "Data Source={server name};Initial Catalog={database name};Persist Security Info=False;User ID={user};Password={password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;", "Machine")
+	[Environment]::SetEnvironmentVariable("ConnectionStrings__MusicPlayerCN", "Data Source={server name};Initial Catalog={database name};Persist Security Info=False;User ID={user};Password={password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;", "User")
+
+Blob
+	[Environment]::SetEnvironmentVariable("Blobs__MusicPlayerCN", "Url={blob url};AccountName={account name};AccountKey={account key};ContainerName={container name};ImagesFolder={images folder}", "Machine")
+	[Environment]::SetEnvironmentVariable("Blobs__MusicPlayerCN", "Url={blob url};AccountName={account name};AccountKey={account key};ContainerName={container name};ImagesFolder={images folder}", "User")

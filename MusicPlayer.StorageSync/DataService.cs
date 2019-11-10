@@ -1,37 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MusicPlayer.Data;
-using MusicPlayer.Data.Entities;
-using MusicPlayer.Data.Repositories;
 using System.Linq;
-using AutoMapper;
+using MusicPlayer.Core.Albums;
+using MusicPlayer.Core.SongInfos;
+using MusicPlayer.Infrastructure;
+using MusicPlayer.Infrastructure.Albums;
+using MusicPlayer.Infrastructure.SongInfos;
 
 namespace MusicPlayer.StorageSync
 {
     public class DataService
     {
-        private readonly IMapper _mapper;
-        private readonly DbContextOptions _dbContextOptions;
         private readonly SongInfoRepository _songInfoRepository;
         private readonly AlbumRepository _albumRepository;
         private readonly IGenericRepository<SongInfo> _songInfoGenericRepository;
-        private readonly IGenericRepository<Album> _albumGenericRepository;
 
-        public DataService(IConfiguration configuration, IMapper mapper)
+        public DataService(IConfiguration configuration)
         {
-            _mapper = mapper;
-            _dbContextOptions = new DbContextOptionsBuilder()
-                .UseSqlServer(configuration.GetConnectionString("MusicPlayerCN"))
+            var dbContextOptions = new DbContextOptionsBuilder()
+                .UseSqlServer(Environment.GetEnvironmentVariable("ConnectionStrings__MusicPlayerCN"))
                 .Options;
-            var musicPlayerContext = new MusicPlayerContext(_dbContextOptions);
+            var musicPlayerContext = new MusicPlayerContext(dbContextOptions);
 
             _songInfoRepository = new SongInfoRepository(musicPlayerContext);
             _albumRepository = new AlbumRepository(musicPlayerContext);
 
-            _songInfoGenericRepository =
-                _songInfoRepository as IGenericRepository<SongInfo>;
-            _albumGenericRepository =
-                _albumRepository as IGenericRepository<Album>;
+            _songInfoGenericRepository = _songInfoRepository;
         }
 
         public void UpdateSongInfo(SongInfo songInfo)
@@ -41,7 +37,6 @@ namespace MusicPlayer.StorageSync
                 .SingleOrDefault();
             if(existingSongInfo != null)
             {
-                _mapper.Map(songInfo, existingSongInfo);
                 _songInfoGenericRepository.Update(existingSongInfo);
             }
             else

@@ -1,4 +1,3 @@
-using AutoMapper;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
@@ -8,28 +7,25 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MusicPlayer.Data;
-using MusicPlayer.Data.Repositories;
-using MusicPlayer.Domain.Profiles;
-using MusicPlayer.Domain.Services;
-using MusicPlayer.Model.Services;
+using MusicPlayer.Infrastructure.Albums;
+using MusicPlayer.Infrastructure.SongInfos;
 using MusicPlayer.Utilities.Helpers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace MusicPlayer
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
 
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
@@ -38,24 +34,19 @@ namespace MusicPlayer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
+            services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddJsonOptions(options =>
                 {
-                    // send back a ISO date
-                    var settings = options.SerializerSettings;
-                    settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    // dont mess with case of properties
-                    var resolver = options.SerializerSettings.ContractResolver
-                        as DefaultContractResolver;
-                    resolver.NamingStrategy = new CamelCaseNamingStrategy();
+                    options.JsonSerializerOptions.MaxDepth = 4;
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
                 })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddDbContext<MusicPlayerContext>(options =>
                     options.UseSqlServer(
-                        Configuration.GetConnectionString("MusicPlayerCN")));
+                        Configuration.GetConnectionString("ConnectionStrings__MusicPlayerCN"),
+                        x => x.MigrationsAssembly(typeof(MusicPlayerContext).Assembly.FullName)));
 
-            services.AddAutoMapper(typeof(AlbumModelProfile));
 
             services.AddTransient<ISongInfoRepository, SongInfoRepository>();
             services.AddTransient<IAlbumRepository, AlbumRepository>();
@@ -67,19 +58,10 @@ namespace MusicPlayer
 
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<MusicPlayerContext>();
+
             services.AddScoped<DbContext, MusicPlayerContext>();
 
             services.AddSingleton(Configuration);
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials()
-                    );
-            });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -90,7 +72,7 @@ namespace MusicPlayer
 
         // This method gets called by the runtime.
         // Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using MusicPlayer.Model.Models;
-using MusicPlayer.Model.Services;
+using MusicPlayer.Core.Albums;
+using MusicPlayer.Infrastructure.Albums;
 
 namespace MusicPlayer.Controllers
 {
@@ -18,36 +18,36 @@ namespace MusicPlayer.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<AlbumModel>>
+        public ActionResult<IEnumerable<AlbumDto>>
             GetAlbums(bool includeSongInfos = false)
         {
-            return new ActionResult<IEnumerable<AlbumModel>>(
+            return new ActionResult<IEnumerable<AlbumDto>>(
                 _albumService.GetAlbums(includeSongInfos));
         }
 
         [HttpGet]
-        public ActionResult<AlbumModel> 
+        public ActionResult<AlbumDto> 
             GetAlbumById(int id, bool includeSongInfos = false)
         {
-            return new ActionResult<AlbumModel>(
+            return new ActionResult<AlbumDto>(
                 _albumService.GetAlbumById(id, includeSongInfos));
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<AlbumModel>> 
+        public ActionResult<IEnumerable<AlbumDto>> 
             GetAlbumByFilter(string propertyName,
                 string value,
                 string comparison = "Contains")
         {
-            return new ActionResult<IEnumerable<AlbumModel>>(
+            return new ActionResult<IEnumerable<AlbumDto>>(
                 _albumService
                     .GetAlbumByFilter(propertyName, comparison, value));
         }
 
         [HttpPost]
-        public ActionResult<AlbumModel> AddAlbum(AlbumModel album)
+        public ActionResult<AlbumDto> AddAlbum(AlbumDto album)
         {
-            return new ActionResult<AlbumModel>(
+            return new ActionResult<AlbumDto>(
                 _albumService.AddAlbum(album));
         }
     }
