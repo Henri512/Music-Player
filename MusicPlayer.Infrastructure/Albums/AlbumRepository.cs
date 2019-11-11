@@ -22,11 +22,8 @@ namespace MusicPlayer.Infrastructure.Albums
         public IQueryable<Album> GetAlbum(string albumName, string author)
         {
             return _albumDbSet
-                .Where(t => t.Name
-                .Equals(
-                    albumName, StringComparison.InvariantCultureIgnoreCase)
-                && t.Author
-                .Equals(author, StringComparison.InvariantCultureIgnoreCase));
+                .Where(t => EF.Functions.Like(t.Name,albumName)
+                && EF.Functions.Like(t.Author, author));
         }
     }
 }

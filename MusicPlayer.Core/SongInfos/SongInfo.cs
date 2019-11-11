@@ -31,6 +31,7 @@ namespace MusicPlayer.Core.SongInfos
         {
             return new SongInfoDto
             {
+                Id = Id,
                 Name = Name,
                 Author = Author,
                 Duration = Duration,

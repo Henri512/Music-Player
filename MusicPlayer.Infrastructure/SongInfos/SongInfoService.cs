@@ -22,12 +22,12 @@ namespace MusicPlayer.Infrastructure.SongInfos
 
         public IEnumerable<SongInfoDto> GetSongInfos(bool includeAlbum)
         {
-            var songInfos = includeAlbum ?
+            IQueryable<SongInfo> query = includeAlbum ?
                 _songInfoGenericRepository.Get()
                     .Include(s => s.Album) 
                 : _songInfoGenericRepository.Get();
 
-            var songInfoModels = songInfos.ToList().Select(s => s.ToDto()).ToList();
+            List<SongInfoDto> songInfoModels = query.ToList().Select(s => s.ToDto()).ToList();
             songInfoModels
                 .ForEach(
                 s =>
@@ -37,7 +37,7 @@ namespace MusicPlayer.Infrastructure.SongInfos
                     s.AlbumImagePath = s.AlbumImagePath != null
                     && s.AlbumImagePath.Any() ?
                         GetAlbumImagesUrls(s.AlbumImagePath)
-                        : new[] { _defaultAlbumLogoImageUrl };
+                        : new[] { DefaultAlbumLogoImageUrl };
                 });
 
             return songInfoModels;
@@ -45,31 +45,31 @@ namespace MusicPlayer.Infrastructure.SongInfos
 
         public SongInfoDto GetSongInfoById(int id, bool includeAlbum)
         {
-            var songInfo = includeAlbum ?
+            IQueryable<SongInfo> query = includeAlbum ?
                 _songInfoGenericRepository.GetById(id).Include(s => s.Album)
                 : _songInfoGenericRepository.GetById(id);
-            var songInfoModel = songInfo.FirstOrDefault()?.ToDto();
-            songInfoModel.BlobFileReference = GetBlobFileUriLocation(
-                songInfoModel.RelativePath);
+            SongInfoDto songInfoDto = query.FirstOrDefault()?.ToDto();
+            songInfoDto.BlobFileReference = GetBlobFileUriLocation(
+                songInfoDto.RelativePath);
 
-            songInfoModel.AlbumImagePath =
-                songInfoModel.AlbumImagePath != null
-                && songInfoModel.AlbumImagePath.Any() ?
-                     GetAlbumImagesUrls(songInfoModel.AlbumImagePath)
-                    : new string[] { _defaultAlbumLogoImageUrl };
+            songInfoDto.AlbumImagePath =
+                songInfoDto.AlbumImagePath != null
+                && songInfoDto.AlbumImagePath.Any() ?
+                     GetAlbumImagesUrls(songInfoDto.AlbumImagePath)
+                    : new [] { DefaultAlbumLogoImageUrl };
 
-            return songInfoModel;
+            return songInfoDto;
         }
 
         public SongInfoDto AddSongInfo(SongInfoDto songInfoDto)
         {
-            var songInfo = SongInfo.ToEntity(songInfoDto);
+            SongInfo songInfo = SongInfo.ToEntity(songInfoDto);
             return _songInfoGenericRepository.Add(songInfo).ToDto();
         }
 
         public bool SongPlayed(int id)
         {
-            var songInfo = _songInfoGenericRepository
+            SongInfo songInfo = _songInfoGenericRepository
                 .GetById(id)
                 .FirstOrDefault();
             if (songInfo == null)

@@ -35,7 +35,7 @@ namespace MusicPlayer.Infrastructure.Albums
                     m.ImagePaths != null
                     && m.ImagePaths.Any() ?
                          GetAlbumImagesUrls(m.ImagePaths)
-                        : new string[] { _defaultAlbumLogoImageUrl };
+                        : new string[] { DefaultAlbumLogoImageUrl };
             });
 
             return albumModels;
@@ -69,7 +69,7 @@ namespace MusicPlayer.Infrastructure.Albums
                 albumModel.ImagePaths != null
                 && albumModel.ImagePaths.Any() ?
                      GetAlbumImagesUrls(albumModel.ImagePaths)
-                    : new[] { _defaultAlbumLogoImageUrl };
+                    : new[] { DefaultAlbumLogoImageUrl };
             return albumModel;
         }
 

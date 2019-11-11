@@ -37,16 +37,14 @@ namespace MusicPlayer
             services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddJsonOptions(options =>
                 {
-                    options.JsonSerializerOptions.MaxDepth = 4;
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddDbContext<MusicPlayerContext>(options =>
                     options.UseSqlServer(
-                        Configuration.GetConnectionString("ConnectionStrings__MusicPlayerCN"),
+                        Configuration.GetValue<string>("ConnectionStrings:MusicPlayerCN"),
                         x => x.MigrationsAssembly(typeof(MusicPlayerContext).Assembly.FullName)));
-
 
             services.AddTransient<ISongInfoRepository, SongInfoRepository>();
             services.AddTransient<IAlbumRepository, AlbumRepository>();
@@ -89,7 +87,7 @@ namespace MusicPlayer
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-            
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

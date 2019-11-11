@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MusicPlayer.Core.SongInfos;
 using MusicPlayer.Infrastructure.SongInfos;
+using MusicPlayer.Utilities;
 
 namespace MusicPlayer.Controllers
 {
@@ -54,11 +55,10 @@ namespace MusicPlayer.Controllers
         [HttpGet]
         public ActionResult<string> GetSongFileUrl(string songFullPath)
         {
-            var blobStoragePath = _configuration
-                .GetSection("BlobStorages").GetValue<string>("SongsBlobUrl");
+            BlobStorageInfo blobStorageInfo = BlobStorageInfo.CreateFromEnvironmentVariable("Blobs__MusicPlayer");
 
             return new ActionResult<string>(
-                Path.Combine(blobStoragePath, songFullPath));
+                Path.Combine(blobStorageInfo.Url, songFullPath));
         }
     }
 }

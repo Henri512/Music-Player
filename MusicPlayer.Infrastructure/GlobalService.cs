@@ -1,46 +1,41 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
+using MusicPlayer.Utilities;
 
 namespace MusicPlayer.Infrastructure
 {
     public abstract class GlobalService
     {
-        protected readonly IConfiguration _configuration;
-        protected readonly string _blobStorageUrl;
-        protected readonly string _defaultAlbumLogoImageUrl;
-        protected readonly string _imageBlobFolderUrl;
+        protected readonly IConfiguration Configuration;
+        protected readonly string BlobStorageUrl;
+        protected readonly string DefaultAlbumLogoImageUrl;
+        protected readonly string ImageBlobFolderUrl;
 
-        public GlobalService(IConfiguration configuration)
+        protected GlobalService(IConfiguration configuration)
         {
-            _configuration = configuration;
-            var blobSection = _configuration.GetSection("BlobStorage");
-            _blobStorageUrl = blobSection
-                .GetValue<string>("SongsBlobUrl") ?? string.Empty;
-            _defaultAlbumLogoImageUrl = blobSection
-                .GetValue<string>("DefaultAlbumLogoImageUrl") ?? string.Empty;
-            _imageBlobFolderUrl = blobSection
-                .GetValue<string>("ImagesFolder") ?? string.Empty;
+            Configuration = configuration;
+            BlobStorageInfo blobStorageInfo = BlobStorageInfo.CreateFromEnvironmentVariable("Blobs__MusicPlayer");
+            BlobStorageUrl = blobStorageInfo.Url;
+            DefaultAlbumLogoImageUrl = "../assets/default-album-image.jpg" ?? string.Empty;
+            ImageBlobFolderUrl = blobStorageInfo.ImagesFolder ?? string.Empty;
         }
+
         protected string[] GetAlbumImagesUrls(string[] albumImages)
         {
             return albumImages
-                .Select(i => GetImageBlobFileUriLocation(i))
+                .Select(GetImageBlobFileUriLocation)
                 .ToArray();
         }
 
         protected string GetBlobFileUriLocation(string fileName)
         {
-            return new Uri(_blobStorageUrl +
-                        fileName.Replace('\\', '/'))
-                .OriginalString;
+            return $"{BlobStorageUrl}{fileName.Replace('\\', '/')}";
         }
 
         protected string GetImageBlobFileUriLocation(string fileName)
         {
-            return new Uri(_blobStorageUrl + "/" + _imageBlobFolderUrl
-                        + fileName.Replace('\\', '/'))
-                .OriginalString;
+            return $"{BlobStorageUrl}/{ImageBlobFolderUrl}/{fileName.Replace('\\', '/')}";
         }
     }
 }

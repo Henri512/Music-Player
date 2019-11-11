@@ -8,7 +8,7 @@ namespace MusicPlayer.Core.SongInfos
 {
     public class SongInfoDto
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         public int? AlbumId { get; set; }
 

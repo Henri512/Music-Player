@@ -26,6 +26,7 @@ namespace MusicPlayer.Core.Albums
         {
             return new AlbumDto
             {
+                Id = Id,
                 Name=Name,
                 Author = Author,
                 Year = Year,

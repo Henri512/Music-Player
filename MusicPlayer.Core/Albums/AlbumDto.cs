@@ -9,7 +9,7 @@ namespace MusicPlayer.Core.Albums
 {
     public class AlbumDto
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 
@@ -35,6 +35,5 @@ namespace MusicPlayer.Core.Albums
                 return duration;
             }
         }
-
     }
 }

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Auth;
 using Microsoft.Azure.Storage.Blob;
-using Microsoft.Extensions.Configuration;
+using MusicPlayer.Utilities;
 using Serilog;
 
 namespace MusicPlayer.StorageSync
@@ -21,20 +20,7 @@ namespace MusicPlayer.StorageSync
         {
             _logger = logger;
 
-            var environmentPath = Environment
-                .GetEnvironmentVariable("Blobs__MusicPlayer", EnvironmentVariableTarget.Machine);
-            var sections = environmentPath.Split(';');
-            var sectionsDictionary = sections
-                .ToDictionary(k => k.Substring(0, k.IndexOf('=')), v => v.Substring(v.IndexOf('=')+1));
-
-            _blobStorageInfo = new BlobStorageInfo
-            {
-                AccountKey = sectionsDictionary["AccountKey"],
-                ContainerName = sectionsDictionary["ContainerName"],
-                Url =  sectionsDictionary["Url"],
-                AccountName = sectionsDictionary["AccountName"],
-                ImagesFolder = sectionsDictionary["ImagesFolder"]
-            };
+            _blobStorageInfo = BlobStorageInfo.CreateFromEnvironmentVariable("Blobs__MusicPlayer");
 
             var storageCredentials = new StorageCredentials(_blobStorageInfo.AccountName, _blobStorageInfo.AccountKey);
             var cloudStorageAccount = new CloudStorageAccount(storageCredentials, true);
@@ -61,23 +47,23 @@ namespace MusicPlayer.StorageSync
             }
             else
             {
+                _logger.Information($"File with Url: {_blobStorageInfo.Url + blobFilePath} does not exist");
                 UploadFile(filePathOnSystem, blobFilePath);
             }
         }
 
         public void UpdateImageBlob(string blobFilePath, string filePathOnSystem)
         {
-            var blobFileUrl = Path.Combine(_blobStorageInfo.Url
-                + _blobStorageInfo.ImagesFolder
-                + blobFilePath.Replace('\\', '/'));
-            if (BlobExists(blobFileUrl))
+            string relativePath = $"{_blobStorageInfo.ImagesFolder}/{blobFilePath.Replace('\\', '/')}";
+            var blobFileUrl = $"{_blobStorageInfo.Url}/{relativePath}";
+            if (BlobExists(relativePath))
             {
                 _logger.Information($"Image with Url: {blobFileUrl} already exist");
             }
             else
             {
-                UploadFile(filePathOnSystem,
-                _blobStorageInfo.ImagesFolder + blobFilePath);
+                _logger.Information($"Image with Url: {blobFileUrl} does not exist");
+                UploadFile(filePathOnSystem, relativePath);
             }
         }
 
@@ -98,15 +84,11 @@ namespace MusicPlayer.StorageSync
                 .Any(t => t.Name == blobFilePath.Replace('\\', '/'));
         }
 
-        public string GetBlobUrl()
-        {
-            return _blobStorageInfo.Url;
-        }
-
         private IEnumerable<CloudBlockBlob> GetAllBlobs(CloudBlobClient blobClient)
         {
             var container = blobClient.GetContainerReference(_blobStorageInfo.ContainerName);
             BlobContinuationToken continuationToken = null;
+            _logger.Information($"Getting all blobs from the container...");
 
             do
             {
