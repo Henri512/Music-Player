@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MusicPlayer.Core.Albums;
@@ -22,7 +23,7 @@ namespace MusicPlayer.Controllers
             GetAlbums(bool includeSongInfos = false)
         {
             return new ActionResult<IEnumerable<AlbumDto>>(
-                _albumService.GetAlbums(includeSongInfos));
+                _albumService.GetAlbums(includeSongInfos).Select(a=> a.ToDto()));
         }
 
         [HttpGet]
@@ -30,7 +31,7 @@ namespace MusicPlayer.Controllers
             GetAlbumById(int id, bool includeSongInfos = false)
         {
             return new ActionResult<AlbumDto>(
-                _albumService.GetAlbumById(id, includeSongInfos));
+                _albumService.GetAlbumById(id, includeSongInfos).ToDto());
         }
 
         [HttpGet]
@@ -41,14 +42,14 @@ namespace MusicPlayer.Controllers
         {
             return new ActionResult<IEnumerable<AlbumDto>>(
                 _albumService
-                    .GetAlbumByFilter(propertyName, comparison, value));
+                    .GetAlbumByFilter(propertyName, comparison, value).Select(a => a.ToDto()));
         }
 
         [HttpPost]
         public ActionResult<AlbumDto> AddAlbum(AlbumDto album)
         {
             return new ActionResult<AlbumDto>(
-                _albumService.AddAlbum(album));
+                _albumService.AddAlbum(album).ToDto());
         }
     }
 }

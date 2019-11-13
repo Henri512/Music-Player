@@ -1,3 +1,6 @@
+using System.Reflection;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
@@ -9,9 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MusicPlayer.Data;
-using MusicPlayer.Infrastructure.Albums;
-using MusicPlayer.Infrastructure.SongInfos;
-using MusicPlayer.Utilities.Helpers;
 
 namespace MusicPlayer
 {
@@ -31,6 +31,8 @@ namespace MusicPlayer
 
         public IConfiguration Configuration { get; }
 
+        public ILifetimeScope AutofacContainer { get; private set; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -40,24 +42,14 @@ namespace MusicPlayer
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
+            // "Blobs__MusicPlayer"
             services.AddDbContext<MusicPlayerContext>(options =>
                     options.UseSqlServer(
                         Configuration.GetValue<string>("ConnectionStrings:MusicPlayerCN"),
                         x => x.MigrationsAssembly(typeof(MusicPlayerContext).Assembly.FullName)));
-
-            services.AddTransient<ISongInfoRepository, SongInfoRepository>();
-            services.AddTransient<IAlbumRepository, AlbumRepository>();
-
-            services.AddTransient<IAlbumService, AlbumService>();
-            services.AddTransient<ISongInfoService, SongInfoService>();
-
-            services.AddTransient<IExpressionHelper, ExpressionHelper>();
-
+            
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<MusicPlayerContext>();
-
-            services.AddScoped<DbContext, MusicPlayerContext>();
 
             services.AddSingleton(Configuration);
 
@@ -66,6 +58,17 @@ namespace MusicPlayer
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            // AutoFac
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+            ConfigureContainer(builder);
+            AutofacContainer = builder.Build();
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
         }
 
         // This method gets called by the runtime.

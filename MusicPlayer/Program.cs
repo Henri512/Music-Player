@@ -1,7 +1,8 @@
-using System;
+using System.IO;
+using Autofac.Extensions.DependencyInjection;
 using ElectronNET.API;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace MusicPlayer
 {
@@ -9,12 +10,18 @@ namespace MusicPlayer
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
-        }
+            var host = Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureWebHostDefaults(webHostBuilder => {
+                         webHostBuilder
+                        .UseContentRoot(Directory.GetCurrentDirectory())
+                        .UseIISIntegration()
+                        .UseElectron(args)
+                        .UseStartup<Startup>();
+                })
+                .Build();
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseElectron(args)
-                .UseStartup<Startup>();
+            host.Run();
+        }
     }
 }

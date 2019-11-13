@@ -1,47 +1,39 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using MusicPlayer.Core.Albums;
+using MusicPlayer.Infrastructure.Blobs;
 using MusicPlayer.Utilities.Helpers;
 
 namespace MusicPlayer.Infrastructure.Albums
 {
-    public class AlbumService : GlobalService, IAlbumService
+    public class AlbumService : IAlbumService
     {
-        private readonly IAlbumRepository _albumRepository;
         private readonly IExpressionHelper _expressionHelper;
+        private readonly IBlobStorageService _blobStorageService;
         private readonly IGenericRepository<Album> _albumGenericRepository;
 
         public AlbumService(IAlbumRepository albumRepository,
-            IConfiguration configuration,
-            IExpressionHelper expressionHelper)
-            : base(configuration)
+            IExpressionHelper expressionHelper,
+            IBlobStorageService blobStorageService)
         {
-            _albumRepository = albumRepository;
             _expressionHelper = expressionHelper;
+            _blobStorageService = blobStorageService;
             _albumGenericRepository = albumRepository as IGenericRepository<Album>;
         }
 
-        public IEnumerable<AlbumDto> GetAlbums(bool includeSongInfos)
+        public IEnumerable<Album> GetAlbums(bool includeSongInfos)
         {
-            var albums = includeSongInfos ? _albumGenericRepository.Get()
+            var query = includeSongInfos ? _albumGenericRepository.Get()
                 .Include(a => a.SongInfos) : _albumGenericRepository.Get();
-            var albumModels =  albums.Select(t => t.ToDto()).ToList();
+            var albums = query.ToList();
+            albums.ForEach(a => a.ImagePath = string.IsNullOrEmpty(a.ImagePath) ?
+                _blobStorageService.DefaultAlbumLogoImageUrl : a.ImagePath);
 
-            albumModels.ForEach(m =>
-            {
-                m.ImagePaths =
-                    m.ImagePaths != null
-                    && m.ImagePaths.Any() ?
-                         GetAlbumImagesUrls(m.ImagePaths)
-                        : new string[] { DefaultAlbumLogoImageUrl };
-            });
-
-            return albumModels;
+            return albums;
         }
 
-        public IEnumerable<AlbumDto>
+        public IEnumerable<Album>
             GetAlbumByFilter(
                 string propertyName,
                 string comparison,
@@ -53,31 +45,35 @@ namespace MusicPlayer.Infrastructure.Albums
                 .Get()
                 .Where(predicate)
                 .ToList();
+            albums.ForEach(a => a.ImagePath = string.IsNullOrEmpty(a.ImagePath) ?
+                _blobStorageService.DefaultAlbumLogoImageUrl : a.ImagePath);
 
-            return albums.Select(t => t.ToDto()).ToList();
+            return albums;
         }
 
-        public AlbumDto GetAlbumById(int id, bool includeSongInfos)
+        public Album GetAlbumById(int id, bool includeSongInfos)
         {
-            var album = includeSongInfos ?
+            var query = includeSongInfos ?
                 _albumGenericRepository.GetById(id).
                     Include(a => a.SongInfos)
                 : _albumGenericRepository.GetById(id);
-            var albumModel = album.FirstOrDefault()?.ToDto();
+            var album = query.FirstOrDefault();
 
-            albumModel.ImagePaths =
-                albumModel.ImagePaths != null
-                && albumModel.ImagePaths.Any() ?
-                     GetAlbumImagesUrls(albumModel.ImagePaths)
-                    : new[] { DefaultAlbumLogoImageUrl };
-            return albumModel;
+            album.ImagePath = string.IsNullOrEmpty(album.ImagePath)
+                ? _blobStorageService.DefaultAlbumLogoImageUrl
+                : album.ImagePath;
+
+            return album;
         }
 
-        public AlbumDto AddAlbum(AlbumDto albumModel)
+        public Album AddAlbum(AlbumDto albumModel)
         {
             var album = Album.ToEntity(albumModel);
             var albumAdded = _albumGenericRepository.Add(album);
-            return albumAdded.ToDto();
+            album.ImagePath = string.IsNullOrEmpty(album.ImagePath)
+                ? _blobStorageService.DefaultAlbumLogoImageUrl
+                : album.ImagePath;
+            return albumAdded;
         }
     }
 }

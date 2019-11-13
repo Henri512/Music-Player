@@ -2,69 +2,71 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using MusicPlayer.Core.SongInfos;
+using MusicPlayer.Infrastructure.Blobs;
 
 namespace MusicPlayer.Infrastructure.SongInfos
 {
-    public class SongInfoService : GlobalService, ISongInfoService
+    public class SongInfoService : ISongInfoService
     {
+        private readonly IBlobStorageService _blobStorageService;
         private readonly IGenericRepository<SongInfo> _songInfoGenericRepository;
 
         public SongInfoService(
             ISongInfoRepository songInfoRepository,
-            IConfiguration configuration)
-            : base(configuration)
+            IBlobStorageService blobStorageService)
         {
+            _blobStorageService = blobStorageService;
             _songInfoGenericRepository =
                 songInfoRepository as IGenericRepository<SongInfo>;
         }
 
-        public IEnumerable<SongInfoDto> GetSongInfos(bool includeAlbum)
+        public IEnumerable<SongInfo> GetSongInfos(bool includeAlbum)
         {
             IQueryable<SongInfo> query = includeAlbum ?
                 _songInfoGenericRepository.Get()
                     .Include(s => s.Album) 
                 : _songInfoGenericRepository.Get();
 
-            List<SongInfoDto> songInfoModels = query.ToList().Select(s => s.ToDto()).ToList();
-            songInfoModels
-                .ForEach(
-                s =>
-                {
-                    s.BlobFileReference = GetBlobFileUriLocation(s.RelativePath);
+            List<SongInfo> songInfos = query.ToList();
+            //songInfoModels
+            //songInfoModels
+            //    .ForEach(
+            //    s =>
+            //    {
+            //        s.BlobFileReference = GetBlobFileUriLocation(s.RelativePath);
 
-                    s.AlbumImagePath = s.AlbumImagePath != null
-                    && s.AlbumImagePath.Any() ?
-                        GetAlbumImagesUrls(s.AlbumImagePath)
-                        : new[] { DefaultAlbumLogoImageUrl };
-                });
+            //        s.AlbumImagePath = s.AlbumImagePath != null
+            //        && s.AlbumImagePath.Any() ?
+            //            GetAlbumImagesUrls(s.AlbumImagePath)
+            //            : new[] { DefaultAlbumLogoImageUrl };
+            //    });
 
-            return songInfoModels;
+            return songInfos;
         }
 
-        public SongInfoDto GetSongInfoById(int id, bool includeAlbum)
+        public SongInfo GetSongInfoById(int id, bool includeAlbum)
         {
             IQueryable<SongInfo> query = includeAlbum ?
                 _songInfoGenericRepository.GetById(id).Include(s => s.Album)
                 : _songInfoGenericRepository.GetById(id);
-            SongInfoDto songInfoDto = query.FirstOrDefault()?.ToDto();
-            songInfoDto.BlobFileReference = GetBlobFileUriLocation(
-                songInfoDto.RelativePath);
+            SongInfo songInfo = query.FirstOrDefault();
+            //songInfoDto.BlobFileReference = GetBlobFileUriLocation(
+            //    songInfoDto.RelativePath);
 
-            songInfoDto.AlbumImagePath =
-                songInfoDto.AlbumImagePath != null
-                && songInfoDto.AlbumImagePath.Any() ?
-                     GetAlbumImagesUrls(songInfoDto.AlbumImagePath)
-                    : new [] { DefaultAlbumLogoImageUrl };
+            //songInfoDto.AlbumImagePath =
+            //    songInfoDto.AlbumImagePath != null
+            //    && songInfoDto.AlbumImagePath.Any() ?
+            //         GetAlbumImagesUrls(songInfoDto.AlbumImagePath)
+            //        : new [] { DefaultAlbumLogoImageUrl };
 
-            return songInfoDto;
+            return songInfo;
         }
 
-        public SongInfoDto AddSongInfo(SongInfoDto songInfoDto)
+        public SongInfo AddSongInfo(SongInfoDto songInfoDto)
         {
             SongInfo songInfo = SongInfo.ToEntity(songInfoDto);
-            return _songInfoGenericRepository.Add(songInfo).ToDto();
+            return _songInfoGenericRepository.Add(songInfo);
         }
 
         public bool SongPlayed(int id)

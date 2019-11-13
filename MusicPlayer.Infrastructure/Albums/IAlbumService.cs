@@ -5,10 +5,10 @@ namespace MusicPlayer.Infrastructure.Albums
 {
     public interface IAlbumService
     {
-        AlbumDto AddAlbum(AlbumDto album);
-        AlbumDto GetAlbumById(int id, bool includeSongInfos);
-        IEnumerable<AlbumDto> GetAlbums(bool includeSongInfos);
-        IEnumerable<AlbumDto> GetAlbumByFilter(
+        Album AddAlbum(AlbumDto album);
+        Album GetAlbumById(int id, bool includeSongInfos);
+        IEnumerable<Album> GetAlbums(bool includeSongInfos);
+        IEnumerable<Album> GetAlbumByFilter(
             string propertyName, string comparison, string value);
     }
 }

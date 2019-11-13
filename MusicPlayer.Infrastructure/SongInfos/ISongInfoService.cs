@@ -5,9 +5,9 @@ namespace MusicPlayer.Infrastructure.SongInfos
 {
     public interface ISongInfoService
     {
-        SongInfoDto AddSongInfo(SongInfoDto songInfo);
-        IEnumerable<SongInfoDto> GetSongInfos(bool includeAlbum);
-        SongInfoDto GetSongInfoById(int id, bool includeAlbum);
+        SongInfo AddSongInfo(SongInfoDto songInfo);
+        IEnumerable<SongInfo> GetSongInfos(bool includeAlbum);
+        SongInfo GetSongInfoById(int id, bool includeAlbum);
         bool SongPlayed(int id);
     }
 }
