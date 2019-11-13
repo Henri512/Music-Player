@@ -16,20 +16,20 @@ namespace MusicPlayer
             builder.RegisterAssemblyTypes(typeof(AlbumService).Assembly)
                 .Where(t => t.Name.EndsWith("Service"))
                 .AsImplementedInterfaces()
-                .InstancePerRequest();
+                .InstancePerLifetimeScope();
             builder.RegisterAssemblyTypes(typeof(AlbumRepository).Assembly)
                 .Where(t => t.Name.EndsWith("Repository"))
                 .AsImplementedInterfaces()
-                .InstancePerRequest();
+                .InstancePerLifetimeScope();
             builder.RegisterType<ExpressionHelper>()
                 .As<IExpressionHelper>()
-                .InstancePerRequest();
+                .InstancePerLifetimeScope();
             builder.RegisterType<MusicPlayerContext>()
                 .As<DbContext>()
                 .InstancePerDependency();
             builder.RegisterType<BlobStorageService>().AsImplementedInterfaces()
                 .WithParameter(new TypedParameter(typeof(string), "Blobs__MusicPlayer"))
-                .InstancePerRequest();
+                .InstancePerLifetimeScope();
         }
     }
 }

@@ -17,10 +17,8 @@ namespace MusicPlayer
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
-            Configuration = configuration;
-
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
@@ -29,7 +27,7 @@ namespace MusicPlayer
             Configuration = builder.Build();
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; private set; }
 
         public ILifetimeScope AutofacContainer { get; private set; }
 
@@ -37,12 +35,13 @@ namespace MusicPlayer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(options => options.EnableEndpointRouting = false)
+                .AddControllersAsServices()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            // "Blobs__MusicPlayer"
+
             services.AddDbContext<MusicPlayerContext>(options =>
                     options.UseSqlServer(
                         Configuration.GetValue<string>("ConnectionStrings:MusicPlayerCN"),
@@ -50,8 +49,6 @@ namespace MusicPlayer
             
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<MusicPlayerContext>();
-
-            services.AddSingleton(Configuration);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -63,7 +60,6 @@ namespace MusicPlayer
             var builder = new ContainerBuilder();
             builder.Populate(services);
             ConfigureContainer(builder);
-            AutofacContainer = builder.Build();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

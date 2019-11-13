@@ -9,7 +9,7 @@ namespace MusicPlayer.Infrastructure.Blobs
         public string DefaultAlbumLogoImageUrl { get; }
         public string ImageBlobFolderUrl { get; }
 
-        protected BlobStorageService(string environmentVariable)
+        public BlobStorageService(string environmentVariable)
         {
             BlobStorageInfo blobStorageInfo = BlobStorageInfo.CreateFromEnvironmentVariable(environmentVariable);
             BlobStorageUrl = blobStorageInfo.Url;
